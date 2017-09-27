@@ -1,0 +1,17 @@
+{
+  "name": "kumulos-react-native",
+  "version": "1.0.0",
+  "description": "Official SDK for integrating Kumulos services with your React Native projects",
+  "main": "src/index.js",
+  "types": "src/kumulos.d.ts",
+  "repository": "https://github.com/Kumulos/KumulosSdkReactNative",
+  "author": "Kumulos Ltd. <support@kumulos.com>",
+  "license": "MIT",
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "react-native-device-info": "^0.11.0"
+  },
+  "peerDependencies": {
+    "react-native": "^0.46.0 || ^0.47.0 || ^0.48.0"
+  }
+}
