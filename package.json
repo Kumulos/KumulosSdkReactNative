@@ -1,6 +1,6 @@
 {
   "name": "kumulos-react-native",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official SDK for integrating Kumulos services with your React Native projects",
   "main": "src/index.js",
   "types": "src/kumulos.d.ts",
@@ -13,5 +13,8 @@
   },
   "peerDependencies": {
     "react-native": "^0.46.0 || ^0.47.0 || ^0.48.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2"
   }
 }

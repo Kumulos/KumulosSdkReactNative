@@ -56,7 +56,7 @@ export class PushSubscriptionManager {
                     Promise.reject(new Error('failed to list channels. status: ' + response.status));
                 }
                 else {
-                    return response.json()
+                    return response.json();
                 }
             });
     }
@@ -102,7 +102,7 @@ export class PushSubscriptionManager {
         if (subscribe) {
             let installId = null;
             try {
-                installId = await getInstallId();
+                installId = await this.client.getInstallId();
             }
             catch (e) {
                 return Promise.reject(new Error('could not get installId'));

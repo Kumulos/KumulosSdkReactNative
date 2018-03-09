@@ -1,5 +1,5 @@
 import { AsyncStorage, NativeModules, Platform } from 'react-native';
-import { BUILD_BASE_URL, PUSH_BASE_URL, PushTokenType } from './consts';
+import { BUILD_BASE_URL, PUSH_BASE_URL, PushTokenType, STATS_BASE_URL } from './consts';
 import { generateUUID, getBasicAuthorizationHeader, makeAuthedJsonCall } from './utils';
 
 import { sendStatsData } from './stats';

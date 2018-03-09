@@ -1,8 +1,8 @@
 import * as DeviceInfo from 'react-native-device-info';
 
 import {
-    DeviceType,
-    DeviceTypeMap,
+    OsType,
+    OsTypeMap,
     RuntimeType,
     STATS_BASE_URL,
     SdkType,
@@ -27,7 +27,7 @@ export async function sendStatsData(client) {
     }
 
     const osVersion = DeviceInfo.getSystemVersion();
-    const osId = DeviceTypeMap[DeviceInfo.getSystemName()] || DeviceType.UNKNOWN;
+    const osId = OsTypeMap[DeviceInfo.getSystemName()] || OsType.UNKNOWN;
     const target = __DEV__ ? TargetType.DEBUG : TargetType.RELEASE;
     const isEmulator = DeviceInfo.isEmulator();
     const tz = DeviceInfo.getTimezone();
