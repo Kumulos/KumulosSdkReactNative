@@ -11,6 +11,100 @@
 		13BE3DEE1AC21097009241FE /* kumulos.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BE3DED1AC21097009241FE /* kumulos.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1265546720DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522391BBF104D00859F49;
+			remoteInfo = "AFNetworking iOS";
+		};
+		1265546920DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522651BBF129200859F49;
+			remoteInfo = "AFNetworking watchOS";
+		};
+		1265546B20DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 299522771BBF136400859F49;
+			remoteInfo = "AFNetworking macOS";
+		};
+		1265546D20DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0A51BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS";
+		};
+		1265546F20DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C3B1BC2C79500FD3B3E;
+			remoteInfo = "AFNetworking iOS Tests";
+		};
+		1265547120DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 298D7C4A1BC2C7B200FD3B3E;
+			remoteInfo = "AFNetworking macOS Tests";
+		};
+		1265547320DD23A000BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2987B0AE1BC408A200179A4C;
+			remoteInfo = "AFNetworking tvOS Tests";
+		};
+		1265548B20DD23BC00BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CB6D132617EB749A00BC2C04;
+			remoteInfo = KSCrashLib;
+		};
+		1265548D20DD23BC00BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CB6D133317EB749A00BC2C04;
+			remoteInfo = KSCrashTests;
+		};
+		1265548F20DD23BC00BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03DE7B6A1C84DEF700F789BA;
+			remoteInfo = KSCrash;
+		};
+		1265549120DD23BC00BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EDF2BF211CCF15AD004BADF4;
+			remoteInfo = KSCrash_static;
+		};
+		1265549820DD23D400BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265549320DD23D400BD44BE /* KumulosSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12735B4A1E4CDD3100ED4488;
+			remoteInfo = "KumulosSDK iOS";
+		};
+		1265549A20DD23D400BD44BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1265549320DD23D400BD44BE /* KumulosSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12735B811E4CDDB500ED4488;
+			remoteInfo = "KumulosSDK macOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -26,6 +120,9 @@
 /* Begin PBXFileReference section */
 		1206498A1F7BB441000E4EB3 /* MobileProvision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileProvision.m; sourceTree = "<group>"; };
 		1206498C1F7BB451000E4EB3 /* MobileProvision.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobileProvision.h; sourceTree = "<group>"; };
+		1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AFNetworking.xcodeproj; path = Carthage/Checkouts/AFNetworking/AFNetworking.xcodeproj; sourceTree = "<group>"; };
+		1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "KSCrash-iOS.xcodeproj"; path = "Carthage/Checkouts/AFNetworking/../KSCrash/iOS/KSCrash-iOS.xcodeproj"; sourceTree = "<group>"; };
+		1265549320DD23D400BD44BE /* KumulosSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KumulosSDK.xcodeproj; path = Carthage/Checkouts/KumulosSdkObjectiveC/KumulosSDK.xcodeproj; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libkumulos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libkumulos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kumulos.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* kumulos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kumulos.m; sourceTree = "<group>"; };
@@ -42,6 +139,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1265545E20DD23A000BD44BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1265546820DD23A000BD44BE /* AFNetworking.framework */,
+				1265546A20DD23A000BD44BE /* AFNetworking.framework */,
+				1265546C20DD23A000BD44BE /* AFNetworking.framework */,
+				1265546E20DD23A000BD44BE /* AFNetworking.framework */,
+				1265547020DD23A000BD44BE /* AFNetworking iOS Tests.xctest */,
+				1265547220DD23A000BD44BE /* AFNetworking macOS Tests.xctest */,
+				1265547420DD23A000BD44BE /* AFNetworking tvOS Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1265548520DD23BB00BD44BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1265548C20DD23BC00BD44BE /* libKSCrashLib.a */,
+				1265548E20DD23BC00BD44BE /* KSCrashTests.xctest */,
+				1265549020DD23BC00BD44BE /* KSCrash.framework */,
+				1265549220DD23BC00BD44BE /* KSCrash.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1265549420DD23D400BD44BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1265549920DD23D400BD44BE /* KumulosSDK.framework */,
+				1265549B20DD23D400BD44BE /* KumulosSDK.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +189,9 @@
 				13BE3DEC1AC21097009241FE /* kumulos.h */,
 				13BE3DED1AC21097009241FE /* kumulos.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				1265549320DD23D400BD44BE /* KumulosSDK.xcodeproj */,
+				1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */,
+				1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -108,12 +242,120 @@
 			mainGroup = 58B511D21A9E6C8500147676;
 			productRefGroup = 58B511D21A9E6C8500147676;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1265545E20DD23A000BD44BE /* Products */;
+					ProjectRef = 1265545D20DD23A000BD44BE /* AFNetworking.xcodeproj */;
+				},
+				{
+					ProductGroup = 1265548520DD23BB00BD44BE /* Products */;
+					ProjectRef = 1265548420DD23BB00BD44BE /* KSCrash-iOS.xcodeproj */;
+				},
+				{
+					ProductGroup = 1265549420DD23D400BD44BE /* Products */;
+					ProjectRef = 1265549320DD23D400BD44BE /* KumulosSDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				58B511DA1A9E6C8500147676 /* kumulos */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1265546820DD23A000BD44BE /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 1265546720DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265546A20DD23A000BD44BE /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 1265546920DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265546C20DD23A000BD44BE /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 1265546B20DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265546E20DD23A000BD44BE /* AFNetworking.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AFNetworking.framework;
+			remoteRef = 1265546D20DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265547020DD23A000BD44BE /* AFNetworking iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking iOS Tests.xctest";
+			remoteRef = 1265546F20DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265547220DD23A000BD44BE /* AFNetworking macOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking macOS Tests.xctest";
+			remoteRef = 1265547120DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265547420DD23A000BD44BE /* AFNetworking tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AFNetworking tvOS Tests.xctest";
+			remoteRef = 1265547320DD23A000BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265548C20DD23BC00BD44BE /* libKSCrashLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKSCrashLib.a;
+			remoteRef = 1265548B20DD23BC00BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265548E20DD23BC00BD44BE /* KSCrashTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KSCrashTests.xctest;
+			remoteRef = 1265548D20DD23BC00BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265549020DD23BC00BD44BE /* KSCrash.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KSCrash.framework;
+			remoteRef = 1265548F20DD23BC00BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265549220DD23BC00BD44BE /* KSCrash.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KSCrash.framework;
+			remoteRef = 1265549120DD23BC00BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265549920DD23D400BD44BE /* KumulosSDK.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KumulosSDK.framework;
+			remoteRef = 1265549820DD23D400BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1265549B20DD23D400BD44BE /* KumulosSDK.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KumulosSDK.framework;
+			remoteRef = 1265549A20DD23D400BD44BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
