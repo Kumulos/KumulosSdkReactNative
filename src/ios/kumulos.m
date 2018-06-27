@@ -1,6 +1,5 @@
 #import "kumulos.h"
-// #import "MobileProvision.h"
-#import <KumulosSDK/KumulosSDK.h>
+#import "KumulosSDK.h"
 @import CoreLocation;
 
 static NSInteger const KSPushTokenTypeProduction = 1;
@@ -16,7 +15,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(initBaseSdk:(NSDictionary*) params)
 {
     NSString* apiKey = params[@"apiKey"];
-    NSString* secretKey = params[@"secretKey"]
+    NSString* secretKey = params[@"secretKey"];
     NSNumber* enableCrashReporting = params[@"enableCrashReporting"];
     NSDictionary* sdkInfo = params[@"sdkInfo"];
     NSDictionary* runtimeInfo = params[@"runtimeInfo"];
