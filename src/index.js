@@ -34,6 +34,8 @@ export default class Kumulos {
 
         NativeModules.kumulos.initBaseSdk(nativeConfig);
 
+        Kumulos.trackEvent(KumulosEvent.AppForegrounded);
+
         clientInstance = new KumulosClient(config);
 
         initialized = true;
