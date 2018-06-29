@@ -89,7 +89,7 @@ export default class Kumulos {
     }
 
     static associateUserWithInstall(userIdentifier, attributes = null) {
-        NativeModules.associateUserWithInstall(userIdentifier, attributes);
+        NativeModules.kumulos.associateUserWithInstall(userIdentifier, attributes);
     }
 
     static trackEddystoneBeaconProximity(namespaceHex, instanceHex, distanceMetres = null) {
