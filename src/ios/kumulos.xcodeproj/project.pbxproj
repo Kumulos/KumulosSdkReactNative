@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12BBE9B620E3E5D100DC9916 /* libKumulosSDKiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BBE9AC20E3E5CB00DC9916 /* libKumulosSDKiOS.a */; };
+		12BBEA3B20E63B8600DC9916 /* libKumulosSDKiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */; };
 		13BE3DEE1AC21097009241FE /* kumulos.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BE3DED1AC21097009241FE /* kumulos.m */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +24,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		12BBE9AC20E3E5CB00DC9916 /* libKumulosSDKiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKumulosSDKiOS.a; sourceTree = "<group>"; };
 		12BBE9AD20E3E5CC00DC9916 /* Kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kumulos.h; sourceTree = "<group>"; };
 		12BBE9AE20E3E5CC00DC9916 /* KSAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAPIOperation.h; sourceTree = "<group>"; };
 		12BBE9AF20E3E5CD00DC9916 /* Kumulos+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kumulos+Analytics.h"; sourceTree = "<group>"; };
@@ -34,6 +33,9 @@
 		12BBE9B320E3E5CF00DC9916 /* KumulosSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KumulosSDK.h; sourceTree = "<group>"; };
 		12BBE9B420E3E5D000DC9916 /* Kumulos+Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kumulos+Push.h"; sourceTree = "<group>"; };
 		12BBE9B520E3E5D100DC9916 /* KumulosPushSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KumulosPushSubscriptionManager.h; sourceTree = "<group>"; };
+		12BBE9F020E530D600DC9916 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKumulosSDKiOS.a; sourceTree = "<group>"; };
+		12BBEA3D20E63E3600DC9916 /* KAnalyticsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KAnalyticsModel.xcdatamodel; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libkumulos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libkumulos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kumulos.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* kumulos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kumulos.m; sourceTree = "<group>"; };
@@ -44,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12BBE9B620E3E5D100DC9916 /* libKumulosSDKiOS.a in Frameworks */,
+				12BBEA3B20E63B8600DC9916 /* libKumulosSDKiOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +56,7 @@
 		1265556220DD40A700BD44BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12BBE9F020E530D600DC9916 /* CoreData.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -70,7 +73,7 @@
 				12BBE9B420E3E5D000DC9916 /* Kumulos+Push.h */,
 				12BBE9B520E3E5D100DC9916 /* KumulosPushSubscriptionManager.h */,
 				12BBE9B320E3E5CF00DC9916 /* KumulosSDK.h */,
-				12BBE9AC20E3E5CB00DC9916 /* libKumulosSDKiOS.a */,
+				12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */,
 			);
 			path = KumulosSDK;
 			sourceTree = "<group>";
@@ -86,6 +89,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				12BBEA3C20E63E3600DC9916 /* KAnalyticsModel.xcdatamodeld */,
 				12BBE9AB20E3E5A400DC9916 /* KumulosSDK */,
 				13BE3DEC1AC21097009241FE /* kumulos.h */,
 				13BE3DED1AC21097009241FE /* kumulos.m */,
@@ -107,6 +111,7 @@
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
+				12BBEA2820E53A3D00DC9916 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -147,6 +152,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		12BBEA2820E53A3D00DC9916 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
@@ -246,6 +261,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KumulosSDK",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = kumulos;
@@ -264,6 +280,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KumulosSDK",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = kumulos;
@@ -293,6 +310,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		12BBEA3C20E63E3600DC9916 /* KAnalyticsModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12BBEA3D20E63E3600DC9916 /* KAnalyticsModel.xcdatamodel */,
+			);
+			currentVersion = 12BBEA3D20E63E3600DC9916 /* KAnalyticsModel.xcdatamodel */;
+			name = KAnalyticsModel.xcdatamodeld;
+			path = KumulosSDK/KAnalyticsModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 58B511D31A9E6C8500147676 /* Project object */;
 }

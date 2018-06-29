@@ -2,8 +2,6 @@
 #import "KumulosSDK.h"
 @import CoreLocation;
 
-static NSInteger const KSPushTokenTypeProduction = 1;
-
 @implementation kumulos
 
 // - (dispatch_queue_t)methodQueue
@@ -82,19 +80,5 @@ RCT_EXPORT_METHOD(pushStoreToken:(NSString*) token)
 
     [Kumulos.shared pushRegisterWithDeviceToken:tokenData];
 }
-
-// RCT_EXPORT_METHOD(KSgetIosTokenType:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
-// {
-//   UIApplicationReleaseMode releaseMode = [MobileProvision releaseMode];
-
-//   if (releaseMode == UIApplicationReleaseAdHoc
-//       || releaseMode == UIApplicationReleaseDev
-//       || releaseMode == UIApplicationReleaseWildcard) {
-//     resolve(@(releaseMode + 1));
-//     return;
-//   }
-
-//   resolve(@(KSPushTokenTypeProduction));
-// }
 
 @end
