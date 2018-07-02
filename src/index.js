@@ -94,30 +94,30 @@ export default class Kumulos {
         NativeModules.kumulos.associateUserWithInstall(userIdentifier, attributes);
     }
 
-    static trackEddystoneBeaconProximity(namespaceHex, instanceHex, distanceMetres = null) {
+    static trackEddystoneBeaconProximity(beacon) {
         let payload = {
             type: BeaconType.Eddystone,
-            namespaceHex,
-            instanceHex
+            namespaceHex: beacon.namespaceHex,
+            instanceHex: beacon.instanceHex
         };
 
-        if (!nullOrUndefined(distanceMetres)) {
-            payload.distanceMetres = distanceMetres;
+        if (!nullOrUndefined(beacon.distanceMetres)) {
+            payload.distanceMetres = beacon.distanceMetres;
         }
 
         Kumulos.trackEventImmediately(KumulosEvent.EngageBeaconEnteredProximity, payload);
     }
 
-    static trackiBeaconProximity(uuid, major, minor, proximity = null) {
+    static trackiBeaconProximity(beacon) {
         let payload = {
             type: BeaconType.iBeacon,
-            uuid,
-            major,
-            minor
+            uuid: beacon.uuid,
+            major: beacon.major,
+            minor: beacon.minor
         };
 
-        if (!nullOrUndefined(proximity)) {
-            payload.proximity = proximity;
+        if (!nullOrUndefined(beacon.proximity)) {
+            payload.proximity = beacon.proximity;
         }
 
         Kumulos.trackEventImmediately(KumulosEvent.EngageBeaconEnteredProximity, payload);
