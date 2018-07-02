@@ -7,17 +7,63 @@ Kumulos provides tools to build and host backend storage for apps, send push not
 ```
 npm install kumulos-react-native --save
 react-native link kumulos-react-native
-react-native link react-native-device-info
 ```
+
+### iOS Linking Steps (required)
+
+To complete the linking process for iOS, it is necessary to manually link the data model file used by Kumulos for offline event persistence.
+
+To link the data model:
+
+1. Open the Xcode project for your react native app
+2. Locate the linked `kumulos` library project
+3. Drag the `KAnalyticsModel.xcdatamodel` file from the `kumulos` project to the root of your app project
+
+### Android Linking Steps (required)
+
+To complete the linking process for Android, you need to ensure your project uses the following versions for tools & libraries:
+
+- Gradle plugin v3.1.3 or greater
+- Build tools v23.0.3 or greater
+- Support library v27.+
+
+In addition, you must add the following to your `android/app/build.gradle` file:
+
+```
+android {
+    ...
+
+    defaultConfig {
+        ...
+
+        manifestPlaceholders = [
+                kumulos_gcm_sender_id: ''
+        ]
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
+
+### SDK Initialization
 
 After installation & linking, you can now initialize the SDK with:
 
 ```javascript
-import KumulosClient from 'kumulos-react-native';
+import Kumulos from 'kumulos-react-native';
 
-const client = new KumulosClient({
-    apiKey: "YOUR_API_KEY",
-    secretKey: "YOUR_SECRET_KEY"
+Kumulos.initialize({
+    apiKey: 'YOUR_API_KEY',
+    secretKey: 'YOUR_SECRET_KEY'
 });
 ```
 
