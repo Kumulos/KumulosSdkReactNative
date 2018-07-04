@@ -33,3 +33,6 @@ export function makeAuthedJsonCall(client, method, url, data = null) {
 
     return fetch(url, options);
 }
+
+export const empty = str => !str || !str.length;
+export const nullOrUndefined = val => val === null || val === undefined;
