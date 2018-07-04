@@ -125,7 +125,7 @@ interface KumulosSdk {
 
     /**
      * Updates the location of the current installation in Kumulos
-     * Accurate locaiton information is used for geofencing
+     * Accurate location information is used for geofencing
      */
     sendLocationUpdate: (location: {
         lat: number;
