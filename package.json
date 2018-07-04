@@ -12,7 +12,7 @@
     "raven-js": "^3.26.3"
   },
   "peerDependencies": {
-    "react-native": "^0.46.0 || ^0.47.0 || ^0.48.0"
+    "react-native": ">=0.46.0"
   },
   "devDependencies": {
     "eslint": "^4.18.2"
