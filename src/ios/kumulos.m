@@ -27,6 +27,11 @@ RCT_EXPORT_METHOD(initBaseSdk:(NSDictionary*) params)
     [config setSdkInfo:sdkInfo];
     [config setRuntimeInfo:runtimeInfo];
 
+    [config setTargetType:TargetTypeRelease];
+#ifdef DEBUG
+    [config setTargetType:TargetTypeDebug];
+#endif
+
     [Kumulos initializeWithConfig:config];
 }
 
