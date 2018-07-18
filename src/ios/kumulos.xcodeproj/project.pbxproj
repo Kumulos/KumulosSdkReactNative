@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12BBEA3B20E63B8600DC9916 /* libKumulosSDKiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */; };
+		12EEC33020FE2D570046085E /* libKumulosSDKiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12EEC32F20FE2D560046085E /* libKumulosSDKiOS.a */; };
 		13BE3DEE1AC21097009241FE /* kumulos.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BE3DED1AC21097009241FE /* kumulos.m */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +24,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		12BBE9AD20E3E5CC00DC9916 /* Kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kumulos.h; sourceTree = "<group>"; };
 		12BBE9AE20E3E5CC00DC9916 /* KSAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAPIOperation.h; sourceTree = "<group>"; };
 		12BBE9AF20E3E5CD00DC9916 /* Kumulos+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kumulos+Analytics.h"; sourceTree = "<group>"; };
 		12BBE9B020E3E5CD00DC9916 /* Kumulos+Crash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kumulos+Crash.h"; sourceTree = "<group>"; };
@@ -34,8 +33,9 @@
 		12BBE9B420E3E5D000DC9916 /* Kumulos+Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kumulos+Push.h"; sourceTree = "<group>"; };
 		12BBE9B520E3E5D100DC9916 /* KumulosPushSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KumulosPushSubscriptionManager.h; sourceTree = "<group>"; };
 		12BBE9F020E530D600DC9916 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKumulosSDKiOS.a; sourceTree = "<group>"; };
 		12BBEA3D20E63E3600DC9916 /* KAnalyticsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KAnalyticsModel.xcdatamodel; sourceTree = "<group>"; };
+		12EEC32E20FE2D560046085E /* Kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kumulos.h; sourceTree = "<group>"; };
+		12EEC32F20FE2D560046085E /* libKumulosSDKiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libKumulosSDKiOS.a; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libkumulos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libkumulos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* kumulos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kumulos.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* kumulos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kumulos.m; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				12BBEA3B20E63B8600DC9916 /* libKumulosSDKiOS.a in Frameworks */,
+				12EEC33020FE2D570046085E /* libKumulosSDKiOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,14 +66,14 @@
 			children = (
 				12BBE9AE20E3E5CC00DC9916 /* KSAPIOperation.h */,
 				12BBE9B220E3E5CF00DC9916 /* KSAPIResponse.h */,
-				12BBE9AD20E3E5CC00DC9916 /* Kumulos.h */,
+				12EEC32E20FE2D560046085E /* Kumulos.h */,
 				12BBE9AF20E3E5CD00DC9916 /* Kumulos+Analytics.h */,
 				12BBE9B020E3E5CD00DC9916 /* Kumulos+Crash.h */,
 				12BBE9B120E3E5CE00DC9916 /* Kumulos+Location.h */,
 				12BBE9B420E3E5D000DC9916 /* Kumulos+Push.h */,
 				12BBE9B520E3E5D100DC9916 /* KumulosPushSubscriptionManager.h */,
 				12BBE9B320E3E5CF00DC9916 /* KumulosSDK.h */,
-				12BBEA3A20E63B8600DC9916 /* libKumulosSDKiOS.a */,
+				12EEC32F20FE2D560046085E /* libKumulosSDKiOS.a */,
 			);
 			path = KumulosSDK;
 			sourceTree = "<group>";

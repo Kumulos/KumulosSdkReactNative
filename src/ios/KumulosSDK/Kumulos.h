@@ -22,6 +22,13 @@ typedef void (^ _Nullable KSAPIOperationFailureBlock)(NSError* _Nonnull, KSAPIOp
 /**
  * Config options for initializing a Kumulos instance
  */
+
+typedef NS_ENUM(NSInteger, KSTargetType) {
+    TargetTypeNotOverridden,
+    TargetTypeDebug,
+    TargetTypeRelease
+};
+
 @interface KSConfig : NSObject
 
 @property (nonatomic,readonly) NSString* _Nonnull apiKey;
@@ -31,6 +38,7 @@ typedef void (^ _Nullable KSAPIOperationFailureBlock)(NSError* _Nonnull, KSAPIOp
 
 @property (nonatomic,readonly) NSDictionary* _Nullable runtimeInfo;
 @property (nonatomic,readonly) NSDictionary* _Nullable sdkInfo;
+@property (nonatomic,readonly) KSTargetType targetType;
 
 + (instancetype _Nullable) configWithAPIKey:(NSString* _Nonnull)APIKey andSecretKey:(NSString* _Nonnull)secretKey;
 
@@ -42,6 +50,7 @@ typedef void (^ _Nullable KSAPIOperationFailureBlock)(NSError* _Nonnull, KSAPIOp
 
 - (instancetype _Nonnull) setRuntimeInfo:(NSDictionary* _Nonnull)info;
 - (instancetype _Nonnull) setSdkInfo:(NSDictionary* _Nonnull)info;
+- (instancetype _Nonnull) setTargetType:(KSTargetType)type;
 
 @end
 
