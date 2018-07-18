@@ -1,4 +1,11 @@
-import { BeaconType, CrashReportFormat, KumulosEvent, PUSH_BASE_URL, RuntimeInfo, SdkInfo } from './consts';
+import {
+    BeaconType,
+    CrashReportFormat,
+    KumulosEvent,
+    PUSH_BASE_URL,
+    RuntimeInfo,
+    SdkInfo
+} from './consts';
 import { empty, makeAuthedJsonCall, nullOrUndefined } from './utils';
 
 import KumulosClient from './client';
@@ -16,7 +23,9 @@ let exceptionsDuringInit = [];
 
 function logException(e, uncaught, context = undefined) {
     if (!initialized || !currentConfig.enableCrashReporting) {
-        console.log('Crash reporting has not been enabled, ignoring exception:');
+        console.log(
+            'Crash reporting has not been enabled, ignoring exception:'
+        );
         console.error(e);
         return;
     }
@@ -33,10 +42,11 @@ function logException(e, uncaught, context = undefined) {
 }
 
 export default class Kumulos {
-
     static initialize(config) {
         if (initialized) {
-            console.error('Kumulos.initialize has already been called, aborting...');
+            console.error(
+                'Kumulos.initialize has already been called, aborting...'
+            );
             return;
         }
 
@@ -44,7 +54,9 @@ export default class Kumulos {
             throw 'API key and secret key are required options!';
         }
 
-        const enableCrashReporting = nullOrUndefined(config.enableCrashReporting)
+        const enableCrashReporting = nullOrUndefined(
+            config.enableCrashReporting
+        )
             ? 0
             : Number(config.enableCrashReporting);
 
@@ -66,7 +78,7 @@ export default class Kumulos {
         if (enableCrashReporting) {
             RavenReactNativePlugin(Raven);
 
-            const transport = (report) => {
+            const transport = report => {
                 Kumulos.trackEvent(KumulosEvent.CrashLoggedException, {
                     format: CrashReportFormat,
                     report: report.data
@@ -83,11 +95,16 @@ export default class Kumulos {
                 ravenOpts.release = config.sourceMapTag;
             }
 
-            ravenInstance = Raven.config('https://nokey@crash.kumulos.com/raven', ravenOpts);
+            ravenInstance = Raven.config(
+                'https://nokey@crash.kumulos.com/raven',
+                ravenOpts
+            );
 
             ravenInstance.install();
 
-            exceptionsDuringInit.forEach(args => logException.apply(this, args));
+            exceptionsDuringInit.forEach(args =>
+                logException.apply(this, args)
+            );
             exceptionsDuringInit = [];
         }
 
@@ -118,8 +135,7 @@ export default class Kumulos {
         let installId = null;
         try {
             installId = await this.getInstallId();
-        }
-        catch (e) {
+        } catch (e) {
             console.error('couldnt get installId');
             return;
         }
@@ -152,21 +168,27 @@ export default class Kumulos {
     }
 
     static associateUserWithInstall(userIdentifier, attributes = null) {
-        NativeModules.kumulos.associateUserWithInstall(userIdentifier, attributes);
+        NativeModules.kumulos.associateUserWithInstall(
+            userIdentifier,
+            attributes
+        );
     }
 
     static trackEddystoneBeaconProximity(beacon) {
         let payload = {
             type: BeaconType.Eddystone,
-            namespaceHex: beacon.namespaceHex,
-            instanceHex: beacon.instanceHex
+            namespace: beacon.namespaceHex,
+            instance: beacon.instanceHex
         };
 
         if (!nullOrUndefined(beacon.distanceMetres)) {
             payload.distanceMetres = beacon.distanceMetres;
         }
 
-        Kumulos.trackEventImmediately(KumulosEvent.EngageBeaconEnteredProximity, payload);
+        Kumulos.trackEventImmediately(
+            KumulosEvent.EngageBeaconEnteredProximity,
+            payload
+        );
     }
 
     static trackiBeaconProximity(beacon) {
@@ -181,7 +203,9 @@ export default class Kumulos {
             payload.proximity = beacon.proximity;
         }
 
-        Kumulos.trackEventImmediately(KumulosEvent.EngageBeaconEnteredProximity, payload);
+        Kumulos.trackEventImmediately(
+            KumulosEvent.EngageBeaconEnteredProximity,
+            payload
+        );
     }
-
 }
