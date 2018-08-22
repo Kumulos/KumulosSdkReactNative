@@ -1,4 +1,3 @@
-
 interface PushChannel {
     uuid: string;
     name?: string;
@@ -127,10 +126,12 @@ interface KumulosSdk {
      * Updates the location of the current installation in Kumulos
      * Accurate location information is used for geofencing
      */
-    sendLocationUpdate: (location: {
-        lat: number;
-        lng: number;
-    }) => void;
+    sendLocationUpdate: (
+        location: {
+            lat: number;
+            lng: number;
+        }
+    ) => void;
 
     /**
      * Associates a user identifier with the current Kumulos installation record.
@@ -142,21 +143,26 @@ interface KumulosSdk {
     /**
      * Records a proximity event for an Eddystone beacon. Proximity events can be used in automation rules.
      */
-    trackEddystoneBeaconProximity: (beacon: {
-        namespaceHex: string;
-        instanceHex: string;
-        distanceMetres?: number;
-    }) => void;
+    trackEddystoneBeaconProximity: (
+        beacon: {
+            namespaceHex: string;
+            instanceHex: string;
+            distanceMetres?: number;
+        }
+    ) => void;
 
     /**
      * Records a proximity event for an iBeacon beacon. Proximity events can be used in automation rules.
      */
-    trackiBeaconProximity: (beacon: {
-        uuid: string;
-        major: number;
-        minor: number;
-        proximity?: number;
-    }) => void;
+    trackiBeaconProximity: (
+        beacon: {
+            uuid: string;
+            major: number;
+            minor: number;
+            proximity?: number;
+        }
+    ) => void;
 }
 
 declare const Kumulos: KumulosSdk;
+export default Kumulos;
