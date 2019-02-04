@@ -40,6 +40,16 @@ RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve reject:(RCTPromis
     resolve([Kumulos installId]);
 }
 
+RCT_EXPORT_METHOD(getCurrentUserIdentifier:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(Kumulos.currentUserIdentifier);
+}
+
+RCT_EXPORT_METHOD(clearUserAssociation)
+{
+    [Kumulos.shared clearUserAssociation];
+}
+
 RCT_EXPORT_METHOD(trackEvent:(NSString*) eventType properties:(NSDictionary*) properties immediateFlush:(BOOL) immediateFlush)
 {
     if (immediateFlush) {
