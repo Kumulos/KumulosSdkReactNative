@@ -17,7 +17,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "23.0.3"
 
     defaultConfig {
         minSdkVersion 16
@@ -36,8 +35,8 @@ repositories {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
+    compileOnly 'com.facebook.react:react-native:+'
 
-    debugImplementation 'com.kumulos.android:kumulos-android-debug:4.0.4'
-    releaseImplementation 'com.kumulos.android:kumulos-android-release:4.0.4'
+    debugImplementation 'com.kumulos.android:kumulos-android-debug:6.0.0'
+    releaseImplementation 'com.kumulos.android:kumulos-android-release:6.0.0'
 }

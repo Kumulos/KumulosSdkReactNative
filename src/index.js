@@ -174,6 +174,14 @@ export default class Kumulos {
         );
     }
 
+    static clearUserAssociation() {
+        NativeModules.kumulos.clearUserAssociation();
+    }
+
+    static async getCurrentUserIdentifier() {
+        return await NativeModules.kumulos.getCurrentUserIdentifier();
+    }
+
     static trackEddystoneBeaconProximity(beacon) {
         let payload = {
             type: BeaconType.Eddystone,

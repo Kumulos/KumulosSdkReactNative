@@ -4,7 +4,7 @@
 //
 //
 
-@import CoreLocation;
+#import <CoreLocation/CoreLocation.h>
 
 #import "Kumulos.h"
 

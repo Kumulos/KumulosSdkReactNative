@@ -9,37 +9,19 @@ npm install kumulos-react-native --save
 react-native link kumulos-react-native
 ```
 
-### iOS Linking Steps (required)
-
-To complete the linking process for iOS, it is necessary to manually link the data model file used by Kumulos for offline event persistence.
-
-To link the data model:
-
-1. Open the Xcode project for your react native app
-2. Locate the linked `kumulos` library project
-3. Drag the `KAnalyticsModel.xcdatamodel` file from the `kumulos` project to the root of your app project
-
 ### Android Linking Steps (required)
 
 To complete the linking process for Android, you need to ensure your project uses the following versions for tools & libraries:
 
-- Gradle plugin v3.1.3 or greater
-- Build tools v23.0.3 or greater
-- Support library v27.+
+-   Gradle plugin v3.1.3 or greater
+-   Build tools v23.0.3 or greater
+-   Support library v27.+
 
 In addition, you must add the following to your `android/app/build.gradle` file:
 
 ```
 android {
-    ...
-
-    defaultConfig {
-        ...
-
-        manifestPlaceholders = [
-                kumulos_gcm_sender_id: ''
-        ]
-    }
+    // ...
 
     packagingOptions {
         exclude 'META-INF/NOTICE'

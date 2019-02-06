@@ -76,6 +76,17 @@ public class KumulosModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getCurrentUserIdentifier(Promise promise) {
+        String userId = Kumulos.getCurrentUserIdentifier(reactContext);
+        promise.resolve(userId);
+    }
+
+    @ReactMethod
+    public void clearUserAssociation() {
+        Kumulos.clearUserAssociation(reactContext);
+    }
+
+    @ReactMethod
     public void trackEvent(String eventType, @Nullable ReadableMap properties, Boolean flushImmediately) {
 
         JSONObject props = null;
