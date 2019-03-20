@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -37,6 +37,6 @@ repositories {
 dependencies {
     compileOnly 'com.facebook.react:react-native:+'
 
-    debugImplementation 'com.kumulos.android:kumulos-android-debug:6.0.0'
-    releaseImplementation 'com.kumulos.android:kumulos-android-release:6.0.0'
+    debugImplementation 'com.kumulos.android:kumulos-android-debug:6.0.0-shoutem'
+    releaseImplementation 'com.kumulos.android:kumulos-android-release:6.0.0-shoutem'
 }
