@@ -36,6 +36,16 @@ repositories {
 dependencies {
     compileOnly 'com.facebook.react:react-native:+'
 
-    debugImplementation 'com.kumulos.android:kumulos-android-debug:6.0.0'
-    releaseImplementation 'com.kumulos.android:kumulos-android-release:6.0.0'
+    debugImplementation ('com.kumulos.android:kumulos-android-debug:6.1.0') {
+        exclude group: 'com.squareup.okhttp3'
+        exclude module: 'okhttp3'
+        exclude group: 'com.android.support'
+        exclude module: 'support-annotation'
+    }
+    releaseImplementation ('com.kumulos.android:kumulos-android-release:6.1.0') {
+        exclude group: 'com.squareup.okhttp3'
+        exclude module: 'okhttp3'
+        exclude group: 'com.android.support'
+        exclude module: 'support-annotation'
+    }
 }
