@@ -11,13 +11,7 @@ react-native link kumulos-react-native
 
 ### Android Linking Steps (required)
 
-To complete the linking process for Android, you need to ensure your project uses the following versions for tools & libraries:
-
--   Gradle plugin v3.1.3 or greater
--   Build tools v23.0.3 or greater
--   Support library v27.+
-
-In addition, you must add the following to your `android/app/build.gradle` file:
+You must add the following to your `android/app/build.gradle` file:
 
 ```
 android {
@@ -27,11 +21,6 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 ```
@@ -58,3 +47,10 @@ Pull requests are welcome for any improvements you might wish to make. If it's s
 ## License
 
 This project is licensed under the MIT license with portions licensed under the BSD 2-Clause license. See our LICENSE file and individual source files for more information.
+
+## React Native Version Support
+
+| RN Version        | SDK Version | Docs                                                                           |
+| ----------------- | ----------- | ------------------------------------------------------------------------------ |
+| >= 0.59           | 3.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
+| >= 0.46 && < 0.59 | 2.1.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/2.1.0/README.md)  |
