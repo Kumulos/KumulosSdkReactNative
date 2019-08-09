@@ -1,3 +1,6 @@
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
 
 buildscript {
     repositories {
@@ -16,10 +19,10 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion safeExtGet('compileSdkVersion', 28)
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion safeExtGet('minSdkVersion', 16)
         versionCode 1
         versionName "1.0"
     }
@@ -34,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
 
     debugImplementation ('com.kumulos.android:kumulos-android-debug:6.1.0') {
         exclude group: 'com.squareup.okhttp3'
