@@ -52,6 +52,6 @@ This project is licensed under the MIT license with portions licensed under the 
 
 | RN Version        | SDK Version | Docs                                                                           |
 | ----------------- | ----------- | ------------------------------------------------------------------------------ |
-| >= 0.60           | 3.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
+| >= 0.60           | 4.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
 | >= 0.59 && < 0.60 | 3.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/3.0.0/README.md)  |
 | >= 0.46 && < 0.59 | 2.1.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/2.1.0/README.md)  |
