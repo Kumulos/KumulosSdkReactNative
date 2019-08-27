@@ -14,7 +14,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 public class KumulosPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new KumulosModule(reactContext));
+      return Arrays.<NativeModule>asList(new KumulosReactNative(reactContext));
     }
 
     // Deprecated from RN 0.47

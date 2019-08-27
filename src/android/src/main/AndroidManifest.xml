@@ -2,5 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.kumulos.reactnative">
 
+    <application>
+        <!-- Kumulos FCM handler -->
+        <service android:name="com.kumulos.android.FirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Kumulos RN Push receiver -->
+        <receiver android:name=".PushReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="com.kumulos.push.RECEIVED" />
+                <action android:name="com.kumulos.push.OPENED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
 </manifest>
-  

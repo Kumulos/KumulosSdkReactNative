@@ -4,7 +4,6 @@ import { generateUUID, getBasicAuthorizationHeader } from './utils';
 import { NativeModules } from 'react-native';
 
 export default class KumulosClient {
-
     constructor(config) {
         this.config = config;
         this.sessionToken = generateUUID();
@@ -18,8 +17,7 @@ export default class KumulosClient {
         let installId = null;
         try {
             installId = await this.getInstallId();
-        }
-        catch (e) {
+        } catch (e) {
             // noop
         }
 
@@ -57,5 +55,4 @@ export default class KumulosClient {
                 return Promise.reject(responseData);
         }
     }
-
 }
