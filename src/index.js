@@ -1,15 +1,13 @@
+import { BeaconType, CrashReportFormat, KumulosEvent } from './consts';
 import {
-    BeaconType,
-    CrashReportFormat,
-    KumulosEvent,
-    PUSH_BASE_URL,
-    RuntimeInfo,
-    SdkInfo
-} from './consts';
-import { empty, makeAuthedJsonCall, nullOrUndefined } from './utils';
+    DeviceEventEmitter,
+    NativeEventEmitter,
+    NativeModules,
+    Platform
+} from 'react-native';
+import { empty, nullOrUndefined } from './utils';
 
 import KumulosClient from './client';
-import { NativeModules } from 'react-native';
 import { PushSubscriptionManager } from './push-channels';
 import Raven from 'raven-js';
 import RavenReactNativePlugin from 'raven-js/plugins/react-native';
@@ -20,6 +18,8 @@ let currentConfig = null;
 
 let ravenInstance = null;
 let exceptionsDuringInit = [];
+
+const kumulosEmitter = new NativeEventEmitter(NativeModules.kumulos);
 
 function logException(e, uncaught, context = undefined) {
     if (!initialized || !currentConfig.enableCrashReporting) {
@@ -50,6 +50,68 @@ export default class Kumulos {
             return;
         }
 
+        if (config.pushOpenedHandler) {
+            Platform.select({
+                ios: () => {
+                    kumulosEmitter.addListener(
+                        'kumulos.push.opened',
+                        config.pushOpenedHandler
+                    );
+                },
+                android: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.push.opened',
+                        push => {
+                            push.data = JSON.parse(push.dataJson);
+                            delete push.dataJson;
+                            config.pushOpenedHandler(push);
+                        }
+                    );
+                }
+            })();
+        }
+
+        if (config.pushReceivedHandler) {
+            Platform.select({
+                ios: () => {
+                    kumulosEmitter.addListener(
+                        'kumulos.push.received',
+                        config.pushReceivedHandler
+                    );
+                },
+                android: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.push.received',
+                        push => {
+                            push.data = JSON.parse(push.dataJson);
+                            delete push.dataJson;
+                            config.pushReceivedHandler(push);
+                        }
+                    );
+                }
+            })();
+        }
+
+        if (config.inAppDeepLinkHandler) {
+            Platform.select({
+                ios: () => {
+                    kumulosEmitter.addListener(
+                        'kumulos.inApp.deepLinkPressed',
+                        config.inAppDeepLinkHandler
+                    );
+                },
+                android: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.inApp.deepLinkPressed',
+                        dataJson => {
+                            const data = JSON.parse(dataJson);
+                            config.inAppDeepLinkHandler(data);
+                        }
+                    );
+                }
+            })();
+        }
+
         if (empty(config.apiKey) || empty(config.secretKey)) {
             throw 'API key and secret key are required options!';
         }
@@ -59,18 +121,6 @@ export default class Kumulos {
         )
             ? 0
             : Number(config.enableCrashReporting);
-
-        const nativeConfig = {
-            apiKey: config.apiKey,
-            secretKey: config.secretKey,
-            enableCrashReporting,
-            sdkInfo: SdkInfo,
-            runtimeInfo: RuntimeInfo
-        };
-
-        NativeModules.kumulos.initBaseSdk(nativeConfig);
-
-        Kumulos.trackEvent(KumulosEvent.AppForegrounded);
 
         clientInstance = new KumulosClient(config);
         currentConfig = config;
@@ -131,28 +181,16 @@ export default class Kumulos {
         return new PushSubscriptionManager(clientInstance);
     }
 
-    static async pushRemoveToken() {
-        let installId = null;
-        try {
-            installId = await this.getInstallId();
-        } catch (e) {
-            console.error('couldnt get installId');
-            return;
-        }
+    static pushRequestToken() {
+        NativeModules.kumulos.pushRequestDeviceToken();
+    }
 
-        const url = `${PUSH_BASE_URL}/v1/app-installs/${installId}/push-token`;
-
-        return makeAuthedJsonCall(this, 'DELETE', url);
+    static pushRemoveToken() {
+        NativeModules.kumulos.pushUnregister();
     }
 
     static pushStoreToken(token) {
         NativeModules.kumulos.pushStoreToken(token);
-    }
-
-    static pushTrackOpen(notificationId) {
-        Kumulos.trackEvent(KumulosEvent.PushTrackOpen, {
-            id: notificationId
-        });
     }
 
     static trackEvent(eventType, properties = null) {
@@ -215,5 +253,19 @@ export default class Kumulos {
             KumulosEvent.EngageBeaconEnteredProximity,
             payload
         );
+    }
+}
+
+export class KumulosInApp {
+    static updateConsentForUser(consented) {
+        NativeModules.kumulos.inAppUpdateConsentForUser(consented);
+    }
+
+    static async getInboxItems() {
+        return NativeModules.kumulos.inAppGetInboxItems();
+    }
+
+    static async presentInboxMessage(inboxItem) {
+        return NativeModules.kumulos.inAppPresentItemWithId(inboxItem.id);
     }
 }

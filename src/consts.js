@@ -1,29 +1,7 @@
-
-const ReactPackage = require('react-native/package.json');
-const KumulosPackage = require('../package.json');
-
 export const BUILD_BASE_URL = 'https://api.kumulos.com';
 export const PUSH_BASE_URL = 'https://push.kumulos.com';
 
 export const CrashReportFormat = 'raven';
-
-const RuntimeType = {
-    REACT_NATIVE: 7
-};
-
-const SdkType = {
-    REACT_NATIVE: 9
-};
-
-export const SdkInfo = {
-    id: SdkType.REACT_NATIVE,
-    version: KumulosPackage.version
-};
-
-export const RuntimeInfo = {
-    id: RuntimeType.REACT_NATIVE,
-    version: ReactPackage.version
-};
 
 export const KumulosEvent = {
     AppForegrounded: 'k.fg',
