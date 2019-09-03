@@ -25,3 +25,4 @@ Release:
 -   [ ] Squash and merge to master
 -   [ ] Delete branch once merged
 -   [ ] Create tag from master matching chosen version
+-   [ ] Run `npm publish` to push to NPM
