@@ -42,7 +42,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     static PushMessage coldStartPush;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.0.0";
+    private static final String SDK_VERSION = "5.1.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
