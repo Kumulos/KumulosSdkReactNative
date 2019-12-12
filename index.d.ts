@@ -102,7 +102,7 @@ interface KumulosSdk {
     /**
      * Requests the native push token from the OS, asking the user for permission if needed.
      */
-    pushRequestDeviceToken: () => void;
+    pushRequestToken: () => void;
 
     /**
      * Unsubscribe from push by removing the token associated with this installation
