@@ -6,7 +6,6 @@ Kumulos provides tools to build and host backend storage for apps, send push not
 
 ```
 npm install kumulos-react-native --save
-react-native link kumulos-react-native
 pod install --project-directory=ios
 ```
 
