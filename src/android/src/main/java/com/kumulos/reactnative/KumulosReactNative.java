@@ -42,7 +42,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     static PushMessage coldStartPush;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.1.3";
+    private static final String SDK_VERSION = "5.1.4";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -183,7 +183,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     @ReactMethod
     public void inAppGetInboxItems(Promise promise) {
         SimpleDateFormat formatter;
-        formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US);
+        formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         List<InAppInboxItem> inboxItems = KumulosInApp.getInboxItems(reactContext);
