@@ -10,7 +10,7 @@ API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
 
-static const NSString* KSReactNativeVersion = @"5.1.4";
+static const NSString* KSReactNativeVersion = @"5.1.5";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
 
