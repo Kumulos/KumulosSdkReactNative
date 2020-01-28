@@ -43,13 +43,17 @@ public class PushReceiver extends PushBroadcastReceiver {
                 .emit("kumulos.push.opened", pushToMap(pushMessage));
     }
 
-    static WritableMap pushToMap(PushMessage push) {
+    static WritableMap pushToMap(PushMessage push, String actionId) {
         WritableMap map = new WritableNativeMap();
         Uri url = push.getUrl();
 
         String pictureUrl = pushMessage.getPictureUrl();
-        if (pictureUrl != null){
-            message.put("pictureUrl", pictureUrl);
+        if (null != pictureUrl ) {
+            message.putString("pictureUrl", pictureUrl);
+        }
+
+        if (null != actionId) {
+            map.putString("actionId", actionId);
         }
 
         map.putInt("id", push.getId());
@@ -57,7 +61,6 @@ public class PushReceiver extends PushBroadcastReceiver {
         map.putString("message", push.getMessage());
         map.putString("dataJson", push.getData().toString());
         map.putString("url", url != null ? url.toString() : null);
-        map.putString("actionId", push.)
 
         return map;
     }
