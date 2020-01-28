@@ -35,9 +35,9 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
         }
     }];
     if (@available(iOS 10.0, *)) {
-        [config setPushReceivedInForegroundHandler:^(KSPushNotification* _Nonnull push, KSPushReceivedInForegroundCompletionHandler completionHandler) {
+        [config setPushReceivedInForegroundHandler:^(KSPushNotification* _Nonnull push) {
             if (ksPushReceivedHandler) {
-                ksPushReceivedHandler(push, completionHandler);
+                ksPushReceivedHandler(push);
             }
 
             completionHandler(UNNotificationPresentationOptionAlert);
