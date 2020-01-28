@@ -10,7 +10,7 @@ API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
 
-static const NSString* KSReactNativeVersion = @"6.0.0";
+static const NSString* KSReactNativeVersion = @"5.2.0";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
 
@@ -72,7 +72,8 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
              @"title": alert ? alert[@"title"] : NSNull.null,
              @"message": alert ? alert[@"body"] : NSNull.null,
              @"data": notification.data,
-             @"url": notification.url ? [notification.url absoluteString] : NSNull.null
+             @"url": notification.url ? [notification.url absoluteString] : NSNull.null,
+             @"actionId": notification.actionIdentifier  ? notification.actionIdentifier : NSNull.null
              };
 }
 
