@@ -47,11 +47,17 @@ public class PushReceiver extends PushBroadcastReceiver {
         WritableMap map = new WritableNativeMap();
         Uri url = push.getUrl();
 
+        String pictureUrl = pushMessage.getPictureUrl();
+        if (pictureUrl != null){
+            message.put("pictureUrl", pictureUrl);
+        }
+
         map.putInt("id", push.getId());
         map.putString("title", push.getTitle());
         map.putString("message", push.getMessage());
         map.putString("dataJson", push.getData().toString());
         map.putString("url", url != null ? url.toString() : null);
+        map.putString("actionId", push.)
 
         return map;
     }
