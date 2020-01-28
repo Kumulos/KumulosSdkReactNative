@@ -19,7 +19,6 @@ interface PushNotification {
     message: string | null;
     data: { [key: string]: any };
     url: string | null;
-    pictureUrl: string | null;
     actionId: string | null;
 }
 

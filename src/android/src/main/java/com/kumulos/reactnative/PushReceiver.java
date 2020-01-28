@@ -22,7 +22,7 @@ public class PushReceiver extends PushBroadcastReceiver {
         }
 
         KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("kumulos.push.received", pushToMap(pushMessage));
+            .emit("kumulos.push.received", pushToMap(pushMessage, null));
     }
 
     @Override
@@ -40,17 +40,12 @@ public class PushReceiver extends PushBroadcastReceiver {
         }
 
         KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("kumulos.push.opened", pushToMap(pushMessage));
+            .emit("kumulos.push.opened", pushToMap(pushMessage, null));
     }
 
     static WritableMap pushToMap(PushMessage push, String actionId) {
         WritableMap map = new WritableNativeMap();
         Uri url = push.getUrl();
-
-        String pictureUrl = pushMessage.getPictureUrl();
-        if (null != pictureUrl ) {
-            message.putString("pictureUrl", pictureUrl);
-        }
 
         if (null != actionId) {
             map.putString("actionId", actionId);
