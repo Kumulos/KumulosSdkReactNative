@@ -39,8 +39,6 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
             if (ksPushReceivedHandler) {
                 ksPushReceivedHandler(push);
             }
-
-            completionHandler(UNNotificationPresentationOptionAlert);
         }];
     }
 
@@ -90,7 +88,7 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
     };
 
     if (@available(iOS 10.0, *)) {
-        ksPushReceivedHandler = ^(KSPushNotification* _Nonnull notification, KSPushReceivedInForegroundCompletionHandler completionHandler) {
+        ksPushReceivedHandler = ^(KSPushNotification* _Nonnull notification) {
             if (!notification.id) {
                 return;
             }
