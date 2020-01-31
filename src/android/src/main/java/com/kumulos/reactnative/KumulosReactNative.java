@@ -40,6 +40,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     static ReactContext sharedReactContext;
     static PushMessage coldStartPush;
+    static String coldStartActionId;
 
     private static final int SDK_TYPE = 9;
     private static final String SDK_VERSION = "5.2.0";
@@ -51,6 +52,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
+        Kumulos.setPushActionHandler(new PushReceiver.PushActionHandler());
 
         JSONObject sdkInfo = new JSONObject();
         JSONObject runtimeInfo = new JSONObject();
@@ -90,9 +92,10 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
         if (null != coldStartPush) {
             sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.push.received", PushReceiver.pushToMap(coldStartPush));
+                    .emit("kumulos.push.received", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
 
             coldStartPush = null;
+            coldStartActionId = null;
         }
     }
 
