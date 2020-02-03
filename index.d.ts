@@ -19,6 +19,7 @@ interface PushNotification {
     message: string | null;
     data: { [key: string]: any };
     url: string | null;
+    actionId?: string;
 }
 
 interface PushChannelManager {

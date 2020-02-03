@@ -10,7 +10,7 @@ API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
 
-static const NSString* KSReactNativeVersion = @"5.1.5";
+static const NSString* KSReactNativeVersion = @"5.2.0";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
 
@@ -35,12 +35,10 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
         }
     }];
     if (@available(iOS 10.0, *)) {
-        [config setPushReceivedInForegroundHandler:^(KSPushNotification* _Nonnull push, KSPushReceivedInForegroundCompletionHandler completionHandler) {
+        [config setPushReceivedInForegroundHandler:^(KSPushNotification* _Nonnull push) {
             if (ksPushReceivedHandler) {
-                ksPushReceivedHandler(push, completionHandler);
+                ksPushReceivedHandler(push);
             }
-
-            completionHandler(UNNotificationPresentationOptionAlert);
         }];
     }
 
@@ -65,15 +63,21 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
     return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed"];
 }
 
-- (NSDictionary*) pushToDict:(KSPushNotification*)notification {
+- (NSMutableDictionary*) pushToDict:(KSPushNotification*)notification {
     NSDictionary* alert = notification.aps[@"alert"];
 
-    return @{@"id": notification.id,
+    NSMutableDictionary* push = [@{@"id": notification.id,
              @"title": alert ? alert[@"title"] : NSNull.null,
              @"message": alert ? alert[@"body"] : NSNull.null,
              @"data": notification.data,
-             @"url": notification.url ? [notification.url absoluteString] : NSNull.null
-             };
+             @"url": notification.url ? [notification.url absoluteString] : NSNull.null,
+             } mutableCopy];
+
+    if (notification.actionIdentifier){
+        [push setObject:notification.actionIdentifier forKey:@"actionId"];
+    }
+
+    return push;
 }
 
 - (void)startObserving {
@@ -89,7 +93,7 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
     };
 
     if (@available(iOS 10.0, *)) {
-        ksPushReceivedHandler = ^(KSPushNotification* _Nonnull notification, KSPushReceivedInForegroundCompletionHandler completionHandler) {
+        ksPushReceivedHandler = ^(KSPushNotification* _Nonnull notification) {
             if (!notification.id) {
                 return;
             }
