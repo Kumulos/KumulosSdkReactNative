@@ -67,6 +67,5 @@ Pod::Spec.new do |spec|
 
   spec.dependency "React"
   spec.dependency "KumulosSdkObjectiveC", "~> 4.0"
-  spec.dependency "KumulosSdkObjectiveCExtension", "~> 4.0"
 
 end
