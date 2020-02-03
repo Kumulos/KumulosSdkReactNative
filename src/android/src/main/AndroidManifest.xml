@@ -15,6 +15,7 @@
             <intent-filter>
                 <action android:name="com.kumulos.push.RECEIVED" />
                 <action android:name="com.kumulos.push.OPENED" />
+                <action android:name="com.kumulos.push.BUTTON_CLICKED" />
             </intent-filter>
         </receiver>
     </application>
