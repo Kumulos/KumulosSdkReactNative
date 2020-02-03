@@ -63,16 +63,21 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
     return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed"];
 }
 
-- (NSDictionary*) pushToDict:(KSPushNotification*)notification {
+- (NSMutableDictionary*) pushToDict:(KSPushNotification*)notification {
     NSDictionary* alert = notification.aps[@"alert"];
 
-    return @{@"id": notification.id,
+    NSMutableDictionary* push = [@{@"id": notification.id,
              @"title": alert ? alert[@"title"] : NSNull.null,
              @"message": alert ? alert[@"body"] : NSNull.null,
              @"data": notification.data,
              @"url": notification.url ? [notification.url absoluteString] : NSNull.null,
-             @"actionId": notification.actionIdentifier  ? notification.actionIdentifier : NSNull.null
-             };
+             } mutableCopy];
+
+    if (notification.actionIdentifier){
+        [push setObject:notification.actionIdentifier forKey:@"actionId"];
+    }
+
+    return push;
 }
 
 - (void)startObserving {
