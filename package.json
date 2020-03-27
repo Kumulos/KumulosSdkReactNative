@@ -1,25 +1,20 @@
 {
-  "name": "kumulos-react-native",
-  "version": "2.1.0-shoutem",
-  "description": "Official SDK for integrating Kumulos services with your React Native projects",
-  "main": "src/index.js",
-  "types": "index.d.ts",
-  "repository": "https://github.com/Kumulos/KumulosSdkReactNative",
-  "author": "Kumulos Ltd. <support@kumulos.com>",
-  "license": "MIT",
-  "dependencies": {
-    "base-64": "^0.1.0",
-    "raven-js": "^3.26.3"
-  },
-  "peerDependencies": {
-    "react-native": ">=0.46.0"
-  },
-  "devDependencies": {
-    "eslint": "^4.18.2"
-  },
-  "rnpm": {
-    "android": {
-      "sourceDir": "./src/android"
+    "name": "kumulos-react-native",
+    "version": "4.0.0-shoutem",
+    "description": "Official SDK for integrating Kumulos services with your React Native projects",
+    "main": "src/index.js",
+    "types": "index.d.ts",
+    "repository": "https://github.com/Kumulos/KumulosSdkReactNative",
+    "author": "Kumulos Ltd. <support@kumulos.com>",
+    "license": "MIT",
+    "dependencies": {
+        "base-64": "^0.1.0",
+        "raven-js": "^3.26.3"
+    },
+    "peerDependencies": {
+        "react-native": ">=0.60.0"
+    },
+    "devDependencies": {
+        "eslint": "^4.18.2"
     }
-  }
 }
