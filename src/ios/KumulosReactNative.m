@@ -213,6 +213,27 @@ RCT_EXPORT_METHOD(inAppPresentItemWithId:(NSNumber* _Nonnull)ident resolve:(RCTP
     reject(@"0", @"Message not found", nil);
 }
 
+
+RCT_EXPORT_METHOD(deleteMessageFromInbox:(NSNumber* _Nonnull)ident resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    NSArray<KSInAppInboxItem*>* inboxItems = [KumulosInApp getInboxItems];
+    for (KSInAppInboxItem* msg in inboxItems) {
+        if ([msg.id isEqualToNumber:ident]) {
+            BOOL result = [KumulosInApp deleteMessageFromInbox:msg];
+
+            if (result) {
+                resolve(nil);
+            } else {
+                reject(@"0", @"Failed to present message", nil);
+            }
+
+            return;
+        }
+    }
+
+    reject(@"0", @"Message not found", nil);
+}
+
 RCT_EXPORT_METHOD(pushStoreToken:(NSString*) token)
 {
     // Data conversion from https://stackoverflow.com/a/7318062/543200
