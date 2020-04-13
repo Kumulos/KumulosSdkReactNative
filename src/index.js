@@ -268,4 +268,8 @@ export class KumulosInApp {
     static async presentInboxMessage(inboxItem) {
         return NativeModules.kumulos.inAppPresentItemWithId(inboxItem.id);
     }
+
+    static async deleteMessageFromInbox(inboxItem) {
+        return NativeModules.kumulos.deleteMessageFromInbox(inboxItem.id);
+    }
 }
