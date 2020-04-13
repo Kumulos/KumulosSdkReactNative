@@ -219,6 +219,12 @@ interface IKumulosInApp {
      * or in-app messaging is not configured.
      */
     updateConsentForUser: (consented: boolean) => void;
+
+    /**
+     * Requests the deletion of the message associated with a given inbox item.
+     * May fail if the item is no longer available or it was not found.
+     */
+    deleteMessageFromInbox: (item: InAppInboxItem) => Promise<void>;
 }
 
 declare const Kumulos: KumulosSdk;

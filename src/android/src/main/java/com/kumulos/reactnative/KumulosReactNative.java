@@ -248,6 +248,26 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         promise.reject("0", "Message not found");
     }
 
+    @ReactMethod
+    public void deleteMessageFromInbox(Integer id, Promise promise) {
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        for (InAppInboxItem item : items) {
+            if (id == item.getId()) {
+                Boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
+                if (result){
+                    promise.resolve(null);
+                }
+                else{
+                    promise.reject("Failed to delete message");
+                }
+
+                return;
+            }
+        }
+
+        promise.reject("0", "Message not found");
+    }
+
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {
 
         @Override
