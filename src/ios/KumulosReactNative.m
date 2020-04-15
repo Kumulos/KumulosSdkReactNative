@@ -10,7 +10,7 @@ API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
 
-static const NSString* KSReactNativeVersion = @"5.2.1";
+static const NSString* KSReactNativeVersion = @"5.3.0";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
 
@@ -204,6 +204,27 @@ RCT_EXPORT_METHOD(inAppPresentItemWithId:(NSNumber* _Nonnull)ident resolve:(RCTP
                 resolve(nil);
             } else {
                 reject(@"0", @"Failed to present message", nil);
+            }
+
+            return;
+        }
+    }
+
+    reject(@"0", @"Message not found", nil);
+}
+
+
+RCT_EXPORT_METHOD(deleteMessageFromInbox:(NSNumber* _Nonnull)ident resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    NSArray<KSInAppInboxItem*>* inboxItems = [KumulosInApp getInboxItems];
+    for (KSInAppInboxItem* msg in inboxItems) {
+        if ([msg.id isEqualToNumber:ident]) {
+            BOOL result = [KumulosInApp deleteMessageFromInbox:msg];
+
+            if (result) {
+                resolve(nil);
+            } else {
+                reject(@"0", @"Failed to delete message", nil);
             }
 
             return;

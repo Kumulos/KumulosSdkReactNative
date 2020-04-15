@@ -43,7 +43,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     static String coldStartActionId;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.2.1";
+    private static final String SDK_VERSION = "5.3.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -241,6 +241,26 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
                         promise.reject("0", "Failed to present message");
                         break;
                 }
+                return;
+            }
+        }
+
+        promise.reject("0", "Message not found");
+    }
+
+    @ReactMethod
+    public void deleteMessageFromInbox(Integer id, Promise promise) {
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        for (InAppInboxItem item : items) {
+            if (id == item.getId()) {
+                Boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
+                if (result){
+                    promise.resolve(null);
+                }
+                else{
+                    promise.reject("Failed to delete message");
+                }
+
                 return;
             }
         }
