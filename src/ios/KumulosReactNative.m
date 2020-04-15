@@ -224,7 +224,7 @@ RCT_EXPORT_METHOD(deleteMessageFromInbox:(NSNumber* _Nonnull)ident resolve:(RCTP
             if (result) {
                 resolve(nil);
             } else {
-                reject(@"0", @"Failed to present message", nil);
+                reject(@"0", @"Failed to delete message", nil);
             }
 
             return;
