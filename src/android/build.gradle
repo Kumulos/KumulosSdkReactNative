@@ -44,11 +44,9 @@ dependencies {
     debugApi ('com.kumulos.android:kumulos-android-debug:9.0.0') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
-        exclude module: 'support-annotation'
     }
     releaseApi ('com.kumulos.android:kumulos-android-release:9.0.0') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
-        exclude module: 'support-annotation'
     }
 }
