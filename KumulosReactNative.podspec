@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.license      = "MIT"
   spec.author             = { "Kumulos Ltd." => "support@kumulos.com" }
   spec.platform     = :ios
-  spec.platform     = :ios, "8.0"
+  spec.platform     = :ios, "9.0"
   spec.source       = { :git => "https://github.com/Kumulos/KumulosSdkReactNative.git", :tag => "#{spec.version}" }
 
 
@@ -66,6 +66,6 @@ Pod::Spec.new do |spec|
   #  you can include multiple dependencies to ensure it works.
 
   spec.dependency "React"
-  spec.dependency "KumulosSdkObjectiveC", "~> 4.2"
+  spec.dependency "KumulosSdkObjectiveC", "4.2.4"
 
 end
