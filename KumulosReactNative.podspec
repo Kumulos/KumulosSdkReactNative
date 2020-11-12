@@ -6,6 +6,8 @@
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
 #
 
+package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
+
 Pod::Spec.new do |spec|
 
   # ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -16,7 +18,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "KumulosReactNative"
-  spec.version      = "4.0.0"
+  spec.version      = package['version']
   spec.summary      = "Kumulos React Native SDK Bridge Module"
   spec.description  = <<-DESC
   Native Module for Kumulos React Native iOS SDK.
@@ -26,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.license      = "MIT"
   spec.author             = { "Kumulos Ltd." => "support@kumulos.com" }
   spec.platform     = :ios
-  spec.platform     = :ios, "8.0"
+  spec.platform     = :ios, "9.0"
   spec.source       = { :git => "https://github.com/Kumulos/KumulosSdkReactNative.git", :tag => "#{spec.version}" }
 
 
@@ -64,6 +66,6 @@ Pod::Spec.new do |spec|
   #  you can include multiple dependencies to ensure it works.
 
   spec.dependency "React"
-  spec.dependency "KumulosSdkObjectiveC", "~> 1.8"
+  spec.dependency "KumulosSdkObjectiveC", "4.2.4"
 
 end

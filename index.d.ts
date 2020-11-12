@@ -13,9 +13,20 @@ interface ChannelSpec {
     showInPortal?: boolean;
 }
 
+interface PushNotification {
+    id: number;
+    title: string | null;
+    message: string | null;
+    data: { [key: string]: any };
+    url: string | null;
+    actionId?: string;
+}
+
 interface PushChannelManager {
     /**
      * Subscribes to the channels given by unique ID
+     *
+     * Channels that don't exist will be created.
      */
     subscribe(uuids: string[]): Promise<Response>;
     /**
@@ -56,6 +67,18 @@ interface KumulosConfig {
      * used in JS error reporting source mapping
      */
     sourceMapTag?: string;
+    /**
+     * Called when a push notification is received and your app is in the foreground
+     */
+    pushReceivedHandler?: (notification: PushNotification) => void;
+    /**
+     * Called when a push notification has been tapped by the user. Use for deep linking.
+     */
+    pushOpenedHandler?: (notification: PushNotification) => void;
+    /**
+     * Called when a user taps a deep-link button from an in-app message. Handle the data payload as desired.
+     */
+    inAppDeepLinkHandler?: (data: { [key: string]: any }) => void;
 }
 
 interface KumulosSdk {
@@ -78,6 +101,11 @@ interface KumulosSdk {
      * Get the channel subscription manager
      */
     getPushSubscriptionManager: () => PushChannelManager;
+
+    /**
+     * Requests the native push token from the OS, asking the user for permission if needed.
+     */
+    pushRequestToken: () => void;
 
     /**
      * Unsubscribe from push by removing the token associated with this installation
@@ -168,5 +196,39 @@ interface KumulosSdk {
     }) => void;
 }
 
+interface InAppInboxItem {
+    title: string;
+    subtitle: string;
+    availableFrom: string | null;
+    availableTo: string | null;
+    dismissedAt: string | null;
+}
+
+interface IKumulosInApp {
+    /**
+     * Returns any locally persisted in-app inbox items that are currently available.
+     * Most recently updated first.
+     */
+    getInboxItems: () => Promise<Array<InAppInboxItem>>;
+    /**
+     * Requests the display of the message associated with a given inbox item.
+     * May fail if the item is no longer available or it was not found.
+     */
+    presentInboxMessage: (item: InAppInboxItem) => Promise<void>;
+    /**
+     * Allows opting the user in and out of in-app messaging when the strategy is
+     * EXPLICIT_BY_USER. Throws a runtime exception if the strategy is AUTO_ENROLL
+     * or in-app messaging is not configured.
+     */
+    updateConsentForUser: (consented: boolean) => void;
+
+    /**
+     * Requests the deletion of the message associated with a given inbox item.
+     * May fail if the item is no longer available or it was not found.
+     */
+    deleteMessageFromInbox: (item: InAppInboxItem) => Promise<void>;
+}
+
 declare const Kumulos: KumulosSdk;
+export const KumulosInApp: IKumulosInApp;
 export default Kumulos;

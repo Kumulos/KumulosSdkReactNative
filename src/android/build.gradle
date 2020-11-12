@@ -39,16 +39,14 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
 
-    debugImplementation ('com.kumulos.android:kumulos-android-debug:6.1.0-shoutem1') {
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+
+    debugApi ('com.kumulos.android:kumulos-android-debug:6.1.0-shoutem1') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
-        exclude group: 'com.android.support'
-        exclude module: 'support-annotation'
     }
-    releaseImplementation ('com.kumulos.android:kumulos-android-release:6.1.0-shoutem1') {
+    releaseApi ('com.kumulos.android:kumulos-android-release:6.1.0-shoutem1') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
-        exclude group: 'com.android.support'
-        exclude module: 'support-annotation'
     }
 }

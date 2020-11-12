@@ -6,7 +6,7 @@ Kumulos provides tools to build and host backend storage for apps, send push not
 
 ```
 npm install kumulos-react-native --save
-react-native link kumulos-react-native
+pod install --project-directory=ios
 ```
 
 ### Android Linking Steps (required)
@@ -29,6 +29,8 @@ android {
 
 After installation & linking, you can now initialize the SDK with:
 
+In your `App.js`:
+
 ```javascript
 import Kumulos from 'kumulos-react-native';
 
@@ -36,6 +38,28 @@ Kumulos.initialize({
     apiKey: 'YOUR_API_KEY',
     secretKey: 'YOUR_SECRET_KEY'
 });
+```
+
+In your `ios/AppDelegate.m` `application:didFinishLaunchingWithOptions:` method:
+
+```objective-c
+#import <KumulosReactNative/KumulosReactNative.h>
+...
+KSConfig* kumulosConfig = [KSConfig
+                             configWithAPIKey:@"YOUR_API_KEY"
+                             andSecretKey:@"YOUR_SECRET_KEY"];
+
+[KumulosReactNative initializeWithConfig:kumulosConfig];
+```
+
+In your `android/app/src/main/java/.../MainApplication.java` `onCreate` method:
+
+```java
+import com.kumulos.android.KumulosConfig;
+import com.kumulos.reactnative.KumulosReactNative;
+...
+KumulosConfig.Builder kumulosConfig = new KumulosConfig.Builder("YOUR_API_KEY", "YOUR_SECRET_KEY");
+KumulosReactNative.initialize(this, kumulosConfig);
 ```
 
 For more information on integrating the React Native SDK with your project, please see the [Kumulos React Native integration guide](https://docs.kumulos.com/integration/react-native).
@@ -52,6 +76,6 @@ This project is licensed under the MIT license with portions licensed under the 
 
 | RN Version        | SDK Version | Docs                                                                           |
 | ----------------- | ----------- | ------------------------------------------------------------------------------ |
-| >= 0.60           | 4.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
+| >= 0.60           | 5.x, 4.x    | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
 | >= 0.59 && < 0.60 | 3.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/3.0.0/README.md)  |
 | >= 0.46 && < 0.59 | 2.1.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/2.1.0/README.md)  |
