@@ -4,6 +4,7 @@ package com.kumulos.reactnative;
 import android.app.Application;
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -17,6 +18,9 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.systeminfo.ReactNativeVersion;
+import com.kumulos.android.DeferredDeepLinkHandlerInterface;
+import com.kumulos.android.DeferredDeepLinkHelper.DeepLinkResolution;
+import com.kumulos.android.DeferredDeepLinkHelper.DeepLink;
 import com.kumulos.android.InAppDeepLinkHandlerInterface;
 import com.kumulos.android.InAppInboxItem;
 import com.kumulos.android.Installation;
@@ -24,6 +28,7 @@ import com.kumulos.android.Kumulos;
 import com.kumulos.android.KumulosConfig;
 import com.kumulos.android.KumulosInApp;
 import com.kumulos.android.PushMessage;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +48,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     static String coldStartActionId;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.3.2";
+    private static final String SDK_VERSION = "5.4.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -71,6 +76,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
         config.setSdkInfo(sdkInfo);
         config.setRuntimeInfo(runtimeInfo);
+        config.enableDeepLinking(new DeepLinkHandler());
 
         Kumulos.initialize(application, config.build());
     }
@@ -281,4 +287,55 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
     }
 
+    private static class DeepLinkHandler implements DeferredDeepLinkHandlerInterface {
+
+        @Override
+        public void handle(Context context, DeepLinkResolution resolution, String link, @Nullable DeepLink data) {
+            if (null == sharedReactContext) {
+                return;
+            }
+
+            WritableMap params = new WritableNativeMap();
+            params.putString("link", link);
+
+            String mappedResolution = null;
+            WritableMap linkData = null;
+            switch (resolution) {
+                case LINK_MATCHED:
+                    mappedResolution = "LINK_MATCHED";
+                    linkData = new WritableNativeMap();
+
+                    linkData.putString("url", data.url);
+
+                    WritableMap content = new WritableNativeMap();
+                    content.putString("title", data.content.title);
+                    content.putString("description", data.content.description);
+                    linkData.putMap("content", content);
+
+                    linkData.putString("data", data.data.toString());
+
+
+                    break;
+                case LINK_NOT_FOUND:
+                    mappedResolution = "LINK_NOT_FOUND";
+                    break;
+                case LINK_EXPIRED:
+                    mappedResolution = "LINK_EXPIRED";
+                    break;
+                case LINK_LIMIT_EXCEEDED:
+                    mappedResolution = "LINK_LIMIT_EXCEEDED";
+                    break;
+                case LOOKUP_FAILED:
+                default:
+                    mappedResolution = "LOOKUP_FAILED";
+                    break;
+            }
+
+            params.putString("resolution", mappedResolution);
+            params.putMap("linkData", linkData);
+
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.links.deepLinkPressed", params);
+        }
+    }
 }

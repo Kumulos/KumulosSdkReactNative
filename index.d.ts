@@ -22,6 +22,14 @@ interface PushNotification {
     actionId?: string;
 }
 
+enum DeepLinkResolution {
+    LookupFailed = "LOOKUP_FAILED",
+    LinkNotFound = "LINK_NOT_FOUND",
+    LinkExpired = "LINK_EXPIRED",
+    LinkLimitExceeded = "LINK_LIMIT_EXCEEDED",
+    LinkMatched = "LINK_MATCHED"
+}
+
 interface PushChannelManager {
     /**
      * Subscribes to the channels given by unique ID
@@ -79,6 +87,10 @@ interface KumulosConfig {
      * Called when a user taps a deep-link button from an in-app message. Handle the data payload as desired.
      */
     inAppDeepLinkHandler?: (data: { [key: string]: any }) => void;
+     /**
+     * Called when a user taps a deep-link which brings user to the app
+     */
+    deepLinkHandler?: (resolution: DeepLinkResolution, link: string, data: { [key: string]: any } | null) => void;
 }
 
 interface KumulosSdk {

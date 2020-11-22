@@ -112,6 +112,28 @@ export default class Kumulos {
             })();
         }
 
+        if (config.deepLinkHandler) {
+            Platform.select({
+                ios: () => {
+                    // kumulosEmitter.addListener(
+                    //     'kumulos.inApp.deepLinkPressed',
+                    //     config.inAppDeepLinkHandler
+                    // );
+                },
+                android: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.links.deepLinkPressed',
+                        event => {
+                            if (event.linkData !== null){
+                                event.linkData.data = JSON.parse(event.linkData.data);
+                            }
+                            config.deepLinkHandler(event.resolution, event.link, event.linkData);
+                        }
+                    );
+                }
+            })();
+        }
+
         if (empty(config.apiKey) || empty(config.secretKey)) {
             throw 'API key and secret key are required options!';
         }
@@ -272,4 +294,12 @@ export class KumulosInApp {
     static async deleteMessageFromInbox(inboxItem) {
         return NativeModules.kumulos.deleteMessageFromInbox(inboxItem.id);
     }
+}
+
+export class DeepLinkResolution {
+    static LookupFailed = "LOOKUP_FAILED";
+    static LinkNotFound = "LINK_NOT_FOUND";
+    static LinkExpired = "LINK_EXPIRED";
+    static LinkLimitExceeded = "LINK_LIMIT_EXCEEDED";
+    static LinkMatched = "LINK_MATCHED";
 }
