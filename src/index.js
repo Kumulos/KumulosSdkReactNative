@@ -132,6 +132,8 @@ export default class Kumulos {
                     );
                 }
             })();
+
+            NativeModules.kumulos.deepLinkListenerRegistered();
         }
 
         if (empty(config.apiKey) || empty(config.secretKey)) {

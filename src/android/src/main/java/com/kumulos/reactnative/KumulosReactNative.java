@@ -55,6 +55,9 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
+    private static boolean deepLinkListenerRegistered = false;
+    private static WritableMap deepLinkCachedData = null;
+
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
         Kumulos.setPushActionHandler(new PushReceiver.PushActionHandler());
@@ -287,14 +290,30 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
     }
 
+
+    @ReactMethod
+    public void deepLinkListenerRegistered() {
+        if (KumulosReactNative.deepLinkListenerRegistered || KumulosReactNative.deepLinkCachedData == null){
+            return;
+        }
+
+        //By the time JS land sends registered event, we assume sharedReactContext and eventListener are initialized
+        if (null == KumulosReactNative.sharedReactContext) {
+            Log.e("KumulosReacNative", "sharedReactContext not initialized");
+            return;
+        }
+
+        KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.links.deepLinkPressed", KumulosReactNative.deepLinkCachedData);
+
+        KumulosReactNative.deepLinkListenerRegistered = true;
+        KumulosReactNative.deepLinkCachedData = null;
+    }
+
     private static class DeepLinkHandler implements DeferredDeepLinkHandlerInterface {
 
         @Override
         public void handle(Context context, DeepLinkResolution resolution, String link, @Nullable DeepLink data) {
-            if (null == sharedReactContext) {
-                return;
-            }
-
             WritableMap params = new WritableNativeMap();
             params.putString("link", link);
 
@@ -334,8 +353,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             params.putString("resolution", mappedResolution);
             params.putMap("linkData", linkData);
 
+            if (!KumulosReactNative.deepLinkListenerRegistered || sharedReactContext == null){
+                KumulosReactNative.deepLinkCachedData = params;
+                return;
+            }
             KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.links.deepLinkPressed", params);
+                        .emit("kumulos.links.deepLinkPressed", params);
         }
     }
 }
