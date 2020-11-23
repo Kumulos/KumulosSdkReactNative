@@ -13,6 +13,10 @@ export default class KumulosClient {
         return await NativeModules.kumulos.getInstallId();
     }
 
+    async getUserIdentifier() {
+        return await NativeModules.kumulos.getCurrentUserIdentifier();
+    }
+
     async call(method, params = {}) {
         let installId = null;
         try {

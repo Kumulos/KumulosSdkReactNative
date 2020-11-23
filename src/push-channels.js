@@ -1,4 +1,5 @@
-import { PUSH_BASE_URL } from './consts';
+import { CRM_BASE_URL, PUSH_BASE_URL } from './consts';
+
 import { makeAuthedJsonCall } from './utils';
 
 async function changeChannelSubscriptions(client, uuids, method, allowEmptyUuids) {
@@ -6,15 +7,15 @@ async function changeChannelSubscriptions(client, uuids, method, allowEmptyUuids
         return Promise.reject(new Error('Provide an array of channel uuids'));
     }
 
-    let installId = null;
+    let userIdentifier = null;
     try {
-        installId = await client.getInstallId();
+        userIdentifier = await client.getUserIdentifier();
     }
     catch (e) {
-        return Promise.reject(new Error('could not get installId'));
+        return Promise.reject(new Error('could not get userIdentifier'));
     }
 
-    const url = `${PUSH_BASE_URL}/v1/app-installs/${installId}/channels/subscriptions`;
+    const url = `${CRM_BASE_URL}/v1/users/${encodeURI(userIdentifier)}/channels/subscriptions`;
 
     const data = {
         uuids: uuids
@@ -40,15 +41,15 @@ export class PushSubscriptionManager {
     }
 
     async listChannels() {
-        let installId = null;
+        let userIdentifier = null;
         try {
-            installId = await this.client.getInstallId();
+            userIdentifier = await this.client.getUserIdentifier();
         }
         catch (e) {
-            return Promise.reject(new Error('could not get installId'));
+            return Promise.reject(new Error('could not get userIdentifier'));
         }
 
-        const url = `${PUSH_BASE_URL}/v1/app-installs/${installId}/channels`;
+        const url = `${CRM_BASE_URL}/v1/users/${encodeURI(userIdentifier)}/channels`;
 
         return makeAuthedJsonCall(this.client, 'GET', url)
             .then((response) => {
@@ -90,7 +91,7 @@ export class PushSubscriptionManager {
             return Promise.reject(new Error('Channel name must be specified for channel creation if the channel should be displayed in the portal'));
         }
 
-        const url = `${PUSH_BASE_URL}/v1/channels`;
+        const url = `${CRM_BASE_URL}/v1/channels`;
 
         let data = {
             uuid,
@@ -100,15 +101,15 @@ export class PushSubscriptionManager {
         };
 
         if (subscribe) {
-            let installId = null;
+            let userIdentifier = null;
             try {
-                installId = await this.client.getInstallId();
+                userIdentifier = await this.client.getUserIdentifier();
             }
             catch (e) {
-                return Promise.reject(new Error('could not get installId'));
+                return Promise.reject(new Error('could not get userIdentifier'));
             }
 
-            data.installId = installId;
+            data.userIdentifier = userIdentifier;
         }
 
         return makeAuthedJsonCall(this.client, 'POST', url, data)

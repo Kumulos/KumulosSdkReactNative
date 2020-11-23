@@ -332,8 +332,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
                     linkData.putMap("content", content);
 
                     linkData.putString("data", data.data.toString());
-
-
                     break;
                 case LINK_NOT_FOUND:
                     mappedResolution = "LINK_NOT_FOUND";
