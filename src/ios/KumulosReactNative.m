@@ -6,6 +6,7 @@
 
 static KSInAppDeepLinkHandlerBlock ksInAppDeepLinkHandler;
 static KSPushOpenedHandlerBlock ksPushOpenedHandler;
+static KSDeepLinkHandlerBlock ksDeepLinkHandler;
 API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
@@ -13,6 +14,10 @@ static KSPushNotification* _Nullable ksColdStartPush;
 static const NSString* KSReactNativeVersion = @"5.4.0";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
+
+typedef void (^ _Nullable KSDeepLinkTransmitter)(NSMutableDictionary* params);
+static KSDeepLinkTransmitter ksDeepLinkTransmitter;
+static NSMutableDictionary* deepLinkCachedData = nil;
 
 @implementation KumulosReactNative
 
@@ -27,6 +32,62 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
             ksInAppDeepLinkHandler(data);
         }
     }];
+
+    [config enableDeepLinking:^(KSDeepLinkResolution resolution, NSURL* _Nonnull url, KSDeepLink* _Nullable data) {
+        NSMutableDictionary *params = [NSMutableDictionary new];
+        params[@"link"] = url.absoluteString;
+
+        NSString* mappedResolution = nil;
+        NSMutableDictionary* linkData = nil;
+        switch(resolution){
+            case KSDeepLinkResolutionLinkMatched: {
+                mappedResolution = @"LINK_MATCHED";
+                linkData = [NSMutableDictionary new];
+
+                linkData[@"url"] = data.url.absoluteString;
+
+                NSMutableDictionary *content = [NSMutableDictionary new];
+                content[@"title"] = data.content.title;
+                content[@"description"] = data.content.description;
+
+                linkData[@"content"] = content;
+                linkData[@"data"]  = data.data;
+
+                break;
+            }
+            case KSDeepLinkResolutionLinkNotFound: {
+                mappedResolution = @"LINK_NOT_FOUND";
+                break;
+            }
+            case KSDeepLinkResolutionLinkExpired: {
+                mappedResolution = @"LINK_EXPIRED";
+                break;
+            }
+            case KSDeepLinkResolutionLinkLimitExceeded: {
+                mappedResolution = @"LINK_LIMIT_EXCEEDED";
+                break;
+            }
+            case KSDeepLinkResolutionLookupFailed:
+            default: {
+                mappedResolution = @"LOOKUP_FAILED";
+                break;
+            }
+        }
+
+        params[@"resolution"] = mappedResolution;
+        params[@"linkData"] = linkData;
+
+
+        if (!ksDeepLinkTransmitter){
+            deepLinkCachedData = params;
+
+            return;
+        }
+
+        ksDeepLinkTransmitter(params);
+    }];
+
+
     [config setPushOpenedHandler:^(KSPushNotification * _Nonnull notification) {
         if (ksPushOpenedHandler) {
             ksPushOpenedHandler(notification);
@@ -60,7 +121,7 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed"];
+    return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed", @"kumulos.links.deepLinkPressed"];
 }
 
 - (NSMutableDictionary*) pushToDict:(KSPushNotification*)notification {
@@ -84,6 +145,15 @@ static const NSUInteger KSRuntimeTypeReactNative = 7;
     ksInAppDeepLinkHandler = ^(NSDictionary * _Nonnull data) {
         [self sendEventWithName:@"kumulos.inApp.deepLinkPressed" body:data];
     };
+
+    ksDeepLinkTransmitter = ^(NSMutableDictionary* params) {
+        [self sendEventWithName:@"kumulos.links.deepLinkPressed" body:params];
+    };
+    if (deepLinkCachedData != nil){
+        ksDeepLinkTransmitter(deepLinkCachedData);
+        deepLinkCachedData = nil;
+    }
+
     ksPushOpenedHandler = ^(KSPushNotification * _Nonnull notification) {
         if (!notification.id) {
             return;

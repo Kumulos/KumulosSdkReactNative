@@ -115,10 +115,12 @@ export default class Kumulos {
         if (config.deepLinkHandler) {
             Platform.select({
                 ios: () => {
-                    // kumulosEmitter.addListener(
-                    //     'kumulos.inApp.deepLinkPressed',
-                    //     config.inAppDeepLinkHandler
-                    // );
+                    kumulosEmitter.addListener(
+                        'kumulos.links.deepLinkPressed',
+                        event => {
+                            config.deepLinkHandler(event.resolution, event.link, event.linkData);
+                        }
+                    );
                 },
                 android: () => {
                     DeviceEventEmitter.addListener(
@@ -133,7 +135,9 @@ export default class Kumulos {
                 }
             })();
 
-            NativeModules.kumulos.deepLinkListenerRegistered();
+            if (Platform.OS === 'android'){
+                NativeModules.kumulos.deepLinkListenerRegistered();
+            }
         }
 
         if (empty(config.apiKey) || empty(config.secretKey)) {

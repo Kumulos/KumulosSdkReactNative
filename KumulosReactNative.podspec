@@ -66,6 +66,6 @@ Pod::Spec.new do |spec|
   #  you can include multiple dependencies to ensure it works.
 
   spec.dependency "React"
-  spec.dependency "KumulosSdkObjectiveC", "4.2.4"
+  spec.dependency "KumulosSdkObjectiveC", "4.3.0"
 
 end
