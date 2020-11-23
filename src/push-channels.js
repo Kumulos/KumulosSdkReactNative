@@ -15,7 +15,7 @@ async function changeChannelSubscriptions(client, uuids, method, allowEmptyUuids
         return Promise.reject(new Error('could not get userIdentifier'));
     }
 
-    const url = `${CRM_BASE_URL}/v1/users/${encodeURI(userIdentifier)}/channels/subscriptions`;
+    const url = `${CRM_BASE_URL}/v1/users/${encodeURIComponent(userIdentifier)}/channels/subscriptions`;
 
     const data = {
         uuids: uuids
@@ -49,7 +49,7 @@ export class PushSubscriptionManager {
             return Promise.reject(new Error('could not get userIdentifier'));
         }
 
-        const url = `${CRM_BASE_URL}/v1/users/${encodeURI(userIdentifier)}/channels`;
+        const url = `${CRM_BASE_URL}/v1/users/${encodeURIComponent(userIdentifier)}/channels`;
 
         return makeAuthedJsonCall(this.client, 'GET', url)
             .then((response) => {
