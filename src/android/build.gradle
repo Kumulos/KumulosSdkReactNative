@@ -41,11 +41,11 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.7'
 
-    debugApi ('com.kumulos.android:kumulos-android-debug:11.3.0') {
+    debugApi ('com.kumulos.android:kumulos-android-debug:11.3.1') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }
-    releaseApi ('com.kumulos.android:kumulos-android-release:11.3.0') {
+    releaseApi ('com.kumulos.android:kumulos-android-release:11.3.1') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }
