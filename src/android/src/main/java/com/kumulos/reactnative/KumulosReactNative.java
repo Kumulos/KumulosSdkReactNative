@@ -101,7 +101,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
         if (null != coldStartPush) {
             sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.push.received", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
+                    .emit("kumulos.push.opened", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
 
             coldStartPush = null;
             coldStartActionId = null;
