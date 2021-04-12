@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.app.TaskStackBuilder;
 
+import com.kumulos.android.Kumulos;
 import com.kumulos.android.PushBroadcastReceiver;
 import com.kumulos.android.PushMessage;
 import com.kumulos.android.PushActionHandlerInterface;
@@ -24,7 +25,48 @@ public class PushReceiver extends PushBroadcastReceiver {
 
     @Override
     protected void onPushOpened(Context context, PushMessage pushMessage) {
-        super.onPushOpened(context, pushMessage);
+        try {
+            Kumulos.pushTrackOpen(context, pushMessage.getId());
+        } catch (Kumulos.UninitializedException e) {
+            /* Noop */
+        }
+
+        Intent launchIntent = getPushOpenActivityIntent(context, pushMessage);
+        if (null == launchIntent) {
+            return;
+        }
+
+        ComponentName component = launchIntent.getComponent();
+        if (null == component) {
+            return;
+        }
+
+        Class<? extends Activity> cls = null;
+        try {
+            cls = Class.forName(component.getClassName()).asSubclass(Activity.class);
+        } catch (ClassNotFoundException e) {
+            /* Noop */
+        }
+
+        // Ensure we're trying to launch an Activity
+        if (null == cls) {
+            return;
+        }
+
+        if (null != pushMessage.getUrl()) {
+            launchIntent = new Intent(Intent.ACTION_VIEW, pushMessage.getUrl());
+        }
+
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        addDeepLinkExtras(pushMessage, launchIntent);
+
+        Activity currentActivity = KumulosReactNative.getActivity();
+        if (currentActivity != null){
+            Intent existingIntent = currentActivity.getIntent();
+            addDeepLinkExtras(pushMessage, existingIntent);
+        }
+
+        context.startActivity(launchIntent);
 
         JSONObject deepLink = pushMessage.getData().optJSONObject("k.deepLink");
         if (null != deepLink) {
