@@ -136,7 +136,7 @@ export default class Kumulos {
             })();
 
             if (Platform.OS === 'android'){
-                NativeModules.kumulos.deepLinkListenerRegistered();
+                NativeModules.kumulos.jsListenersRegistered();
             }
         }
 

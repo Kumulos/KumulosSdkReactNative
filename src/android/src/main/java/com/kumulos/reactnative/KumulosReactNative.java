@@ -55,7 +55,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
-    private static boolean deepLinkListenerRegistered = false;
+    private static boolean jsListenersRegistered = false;
     private static WritableMap deepLinkCachedData = null;
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
@@ -93,19 +93,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "kumulos";
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
-
-        if (null != coldStartPush) {
-            sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.push.opened", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
-
-            coldStartPush = null;
-            coldStartActionId = null;
-        }
     }
 
     @ReactMethod
@@ -278,7 +265,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     }
 
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {
-
         @Override
         public void handle(Context context, JSONObject data) {
             if (null == sharedReactContext) {
@@ -290,10 +276,10 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
     }
 
-
     @ReactMethod
-    public void deepLinkListenerRegistered() {
-        if (KumulosReactNative.deepLinkListenerRegistered || KumulosReactNative.deepLinkCachedData == null){
+    public void jsListenersRegistered() {
+        if (KumulosReactNative.jsListenersRegistered ||
+            (KumulosReactNative.deepLinkCachedData == null && KumulosReactNative.coldStartPush == null)){
             return;
         }
 
@@ -303,10 +289,20 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             return;
         }
 
-        KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.links.deepLinkPressed", KumulosReactNative.deepLinkCachedData);
+        if (KumulosReactNative.deepLinkCachedData != null){
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("kumulos.links.deepLinkPressed", KumulosReactNative.deepLinkCachedData);
+        }
 
-        KumulosReactNative.deepLinkListenerRegistered = true;
+        if (coldStartPush != null){
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.push.opened", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
+        }
+
+
+        KumulosReactNative.jsListenersRegistered = true;
+        KumulosReactNative.coldStartPush = null;
+        KumulosReactNative.coldStartActionId = null;
         KumulosReactNative.deepLinkCachedData = null;
     }
 
@@ -351,7 +347,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             params.putString("resolution", mappedResolution);
             params.putMap("linkData", linkData);
 
-            if (!KumulosReactNative.deepLinkListenerRegistered || sharedReactContext == null){
+            if (!KumulosReactNative.jsListenersRegistered || sharedReactContext == null){
                 KumulosReactNative.deepLinkCachedData = params;
                 return;
             }
