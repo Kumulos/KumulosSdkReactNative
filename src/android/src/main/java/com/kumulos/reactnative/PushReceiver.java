@@ -60,11 +60,7 @@ public class PushReceiver extends PushBroadcastReceiver {
         launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         addDeepLinkExtras(pushMessage, launchIntent);
 
-        Activity currentActivity = KumulosReactNative.getActivity();
-        if (currentActivity != null){
-            Intent existingIntent = currentActivity.getIntent();
-            addDeepLinkExtras(pushMessage, existingIntent);
-        }
+        maybeAddDeepLinkExtrasToExistingIntent(pushMessage);
 
         context.startActivity(launchIntent);
 
@@ -74,6 +70,20 @@ public class PushReceiver extends PushBroadcastReceiver {
         }
 
         KumulosReactNative.emitOrCachePushOpen(pushMessage, null);
+    }
+
+    private static void maybeAddDeepLinkExtrasToExistingIntent(PushMessage pushMessage){
+        if (KumulosReactNative.sharedReactContext == null){
+            return;
+        }
+
+        Activity currentActivity = KumulosReactNative.sharedReactContext.getCurrentActivity();
+        if (currentActivity == null){
+            return;
+        }
+
+        Intent existingIntent = currentActivity.getIntent();
+        addDeepLinkExtras(pushMessage, existingIntent);
     }
 
     static class PushActionHandler implements PushActionHandlerInterface {

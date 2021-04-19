@@ -57,7 +57,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     private static boolean jsListenersRegistered = false;
     private static WritableMap deepLinkCachedData = null;
-    private static KumulosReactNative self;
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
@@ -90,8 +89,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         super(reactContext);
         this.reactContext = reactContext;
         sharedReactContext = reactContext;
-
-        self = this;
     }
 
     @Override
@@ -328,13 +325,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
         KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("kumulos.push.received", pushToMap(message, null));
-    }
-
-    static @Nullable Activity getActivity() {
-        if (self == null){
-            return null;
-        }
-        return self.getCurrentActivity();
     }
 
     private static WritableMap pushToMap(PushMessage push, String actionId) {
