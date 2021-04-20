@@ -53,16 +53,25 @@ public class PushReceiver extends PushBroadcastReceiver {
             return;
         }
 
-        if (null != pushMessage.getUrl()) {
-            launchIntent = new Intent(Intent.ACTION_VIEW, pushMessage.getUrl());
-        }
-
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        addDeepLinkExtras(pushMessage, launchIntent);
-
         maybeAddDeepLinkExtrasToExistingIntent(pushMessage);
 
-        context.startActivity(launchIntent);
+        if (null != pushMessage.getUrl()) {
+            launchIntent = new Intent(Intent.ACTION_VIEW, pushMessage.getUrl());
+
+            addDeepLinkExtras(pushMessage, launchIntent);
+
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+            taskStackBuilder.addParentStack(component);
+            taskStackBuilder.addNextIntent(launchIntent);
+            taskStackBuilder.startActivities();
+        }
+        else{
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            addDeepLinkExtras(pushMessage, launchIntent);
+
+            context.startActivity(launchIntent);
+        }
 
         JSONObject deepLink = pushMessage.getData().optJSONObject("k.deepLink");
         if (null != deepLink) {
