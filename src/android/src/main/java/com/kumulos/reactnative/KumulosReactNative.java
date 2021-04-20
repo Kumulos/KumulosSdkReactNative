@@ -1,9 +1,11 @@
 
 package com.kumulos.reactnative;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
@@ -18,6 +20,7 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.systeminfo.ReactNativeVersion;
+
 import com.kumulos.android.DeferredDeepLinkHandlerInterface;
 import com.kumulos.android.DeferredDeepLinkHelper.DeepLinkResolution;
 import com.kumulos.android.DeferredDeepLinkHelper.DeepLink;
@@ -29,7 +32,6 @@ import com.kumulos.android.KumulosConfig;
 import com.kumulos.android.KumulosInApp;
 import com.kumulos.android.PushMessage;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,24 +40,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import androidx.annotation.Nullable;
 
 public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     static ReactContext sharedReactContext;
-    static PushMessage coldStartPush;
-    static String coldStartActionId;
+    private static WritableMap cachedPushOpen;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.4.0";
+    private static final String SDK_VERSION = "5.4.1";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
 
     private final ReactApplicationContext reactContext;
 
-    private static boolean deepLinkListenerRegistered = false;
+    private static boolean jsListenersRegistered = false;
     private static WritableMap deepLinkCachedData = null;
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
@@ -73,6 +73,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             runtimeInfo.put("version", ReactNativeVersion.VERSION.get("major")
                     + "." + ReactNativeVersion.VERSION.get("minor")
                     + "." + ReactNativeVersion.VERSION.get("patch"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -93,19 +94,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "kumulos";
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
-
-        if (null != coldStartPush) {
-            sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.push.received", PushReceiver.pushToMap(coldStartPush, coldStartActionId));
-
-            coldStartPush = null;
-            coldStartActionId = null;
-        }
     }
 
     @ReactMethod
@@ -278,7 +266,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     }
 
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {
-
         @Override
         public void handle(Context context, JSONObject data) {
             if (null == sharedReactContext) {
@@ -290,24 +277,71 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
     }
 
-
     @ReactMethod
-    public void deepLinkListenerRegistered() {
-        if (KumulosReactNative.deepLinkListenerRegistered || KumulosReactNative.deepLinkCachedData == null){
+    public void jsListenersRegistered() {
+        if (KumulosReactNative.jsListenersRegistered ||
+            (KumulosReactNative.deepLinkCachedData == null && KumulosReactNative.cachedPushOpen == null)){
+
+            KumulosReactNative.jsListenersRegistered = true;
             return;
         }
 
         //By the time JS land sends registered event, we assume sharedReactContext and eventListener are initialized
         if (null == KumulosReactNative.sharedReactContext) {
             Log.e("KumulosReacNative", "sharedReactContext not initialized");
+            KumulosReactNative.jsListenersRegistered = true;
+            return;
+        }
+
+        if (KumulosReactNative.deepLinkCachedData != null){
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("kumulos.links.deepLinkPressed", KumulosReactNative.deepLinkCachedData);
+        }
+
+        if (cachedPushOpen != null){
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.push.opened", cachedPushOpen);
+        }
+
+        KumulosReactNative.jsListenersRegistered = true;
+        KumulosReactNative.cachedPushOpen = null;
+        KumulosReactNative.deepLinkCachedData = null;
+    }
+
+    static void emitOrCachePushOpen(PushMessage message, String actionId){
+        if (!jsListenersRegistered || null == sharedReactContext) {
+            KumulosReactNative.cachedPushOpen = pushToMap(message, actionId);
             return;
         }
 
         KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("kumulos.links.deepLinkPressed", KumulosReactNative.deepLinkCachedData);
+                .emit("kumulos.push.opened", pushToMap(message, actionId));
+    }
 
-        KumulosReactNative.deepLinkListenerRegistered = true;
-        KumulosReactNative.deepLinkCachedData = null;
+    static void emitPushReceived(PushMessage message){
+        if (null == KumulosReactNative.sharedReactContext) {
+            return;
+        }
+
+        KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("kumulos.push.received", pushToMap(message, null));
+    }
+
+    private static WritableMap pushToMap(PushMessage push, String actionId) {
+        WritableMap map = new WritableNativeMap();
+        Uri url = push.getUrl();
+
+        if (null != actionId) {
+            map.putString("actionId", actionId);
+        }
+
+        map.putInt("id", push.getId());
+        map.putString("title", push.getTitle());
+        map.putString("message", push.getMessage());
+        map.putString("dataJson", push.getData().toString());
+        map.putString("url", url != null ? url.toString() : null);
+
+        return map;
     }
 
     private static class DeepLinkHandler implements DeferredDeepLinkHandlerInterface {
@@ -351,7 +385,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             params.putString("resolution", mappedResolution);
             params.putMap("linkData", linkData);
 
-            if (!KumulosReactNative.deepLinkListenerRegistered || sharedReactContext == null){
+            if (!KumulosReactNative.jsListenersRegistered || sharedReactContext == null){
                 KumulosReactNative.deepLinkCachedData = params;
                 return;
             }

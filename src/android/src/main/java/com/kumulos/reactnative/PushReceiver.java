@@ -1,16 +1,13 @@
 package com.kumulos.reactnative;
 
 import android.content.Context;
-import android.net.Uri;
 import android.content.Intent;
 import android.content.ComponentName;
 import android.app.Activity;
 import android.os.Build;
 import android.app.TaskStackBuilder;
 
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.kumulos.android.Kumulos;
 import com.kumulos.android.PushBroadcastReceiver;
 import com.kumulos.android.PushMessage;
 import com.kumulos.android.PushActionHandlerInterface;
@@ -23,47 +20,79 @@ public class PushReceiver extends PushBroadcastReceiver {
     protected void onPushReceived(Context context, PushMessage pushMessage) {
         super.onPushReceived(context, pushMessage);
 
-        if (null == KumulosReactNative.sharedReactContext) {
-            return;
-        }
-
-        KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit("kumulos.push.received", pushToMap(pushMessage, null));
+        KumulosReactNative.emitPushReceived(pushMessage);
     }
 
     @Override
     protected void onPushOpened(Context context, PushMessage pushMessage) {
-        super.onPushOpened(context, pushMessage);
+        try {
+            Kumulos.pushTrackOpen(context, pushMessage.getId());
+        } catch (Kumulos.UninitializedException e) {
+            /* Noop */
+        }
+
+        Intent launchIntent = getPushOpenActivityIntent(context, pushMessage);
+        if (null == launchIntent) {
+            return;
+        }
+
+        ComponentName component = launchIntent.getComponent();
+        if (null == component) {
+            return;
+        }
+
+        Class<? extends Activity> cls = null;
+        try {
+            cls = Class.forName(component.getClassName()).asSubclass(Activity.class);
+        } catch (ClassNotFoundException e) {
+            /* Noop */
+        }
+
+        // Ensure we're trying to launch an Activity
+        if (null == cls) {
+            return;
+        }
+
+        maybeAddDeepLinkExtrasToExistingIntent(pushMessage);
+
+        if (null != pushMessage.getUrl()) {
+            launchIntent = new Intent(Intent.ACTION_VIEW, pushMessage.getUrl());
+
+            addDeepLinkExtras(pushMessage, launchIntent);
+
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+            taskStackBuilder.addParentStack(component);
+            taskStackBuilder.addNextIntent(launchIntent);
+            taskStackBuilder.startActivities();
+        }
+        else{
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            addDeepLinkExtras(pushMessage, launchIntent);
+
+            context.startActivity(launchIntent);
+        }
 
         JSONObject deepLink = pushMessage.getData().optJSONObject("k.deepLink");
         if (null != deepLink) {
             return;
         }
 
-        if (null == KumulosReactNative.sharedReactContext) {
-            KumulosReactNative.coldStartPush = pushMessage;
+        KumulosReactNative.emitOrCachePushOpen(pushMessage, null);
+    }
+
+    private static void maybeAddDeepLinkExtrasToExistingIntent(PushMessage pushMessage){
+        if (KumulosReactNative.sharedReactContext == null){
             return;
         }
 
-        KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit("kumulos.push.opened", pushToMap(pushMessage, null));
-    }
-
-    static WritableMap pushToMap(PushMessage push, String actionId) {
-        WritableMap map = new WritableNativeMap();
-        Uri url = push.getUrl();
-
-        if (null != actionId) {
-            map.putString("actionId", actionId);
+        Activity currentActivity = KumulosReactNative.sharedReactContext.getCurrentActivity();
+        if (currentActivity == null){
+            return;
         }
 
-        map.putInt("id", push.getId());
-        map.putString("title", push.getTitle());
-        map.putString("message", push.getMessage());
-        map.putString("dataJson", push.getData().toString());
-        map.putString("url", url != null ? url.toString() : null);
-
-        return map;
+        Intent existingIntent = currentActivity.getIntent();
+        addDeepLinkExtras(pushMessage, existingIntent);
     }
 
     static class PushActionHandler implements PushActionHandlerInterface {
@@ -74,14 +103,7 @@ public class PushReceiver extends PushBroadcastReceiver {
 
             this.launchActivity(context, pushMessage);
 
-            if (null == KumulosReactNative.sharedReactContext) {
-                KumulosReactNative.coldStartPush = pushMessage;
-                KumulosReactNative.coldStartActionId = actionId;
-                return;
-            }
-
-            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("kumulos.push.opened", pushToMap(pushMessage, actionId));
+            KumulosReactNative.emitOrCachePushOpen(pushMessage, actionId);
         }
 
         private void launchActivity(Context context, PushMessage pushMessage){

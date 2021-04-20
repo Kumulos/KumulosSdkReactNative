@@ -134,10 +134,10 @@ export default class Kumulos {
                     );
                 }
             })();
+        }
 
-            if (Platform.OS === 'android'){
-                NativeModules.kumulos.deepLinkListenerRegistered();
-            }
+        if (Platform.OS === 'android'){
+            NativeModules.kumulos.jsListenersRegistered();
         }
 
         if (empty(config.apiKey) || empty(config.secretKey)) {
