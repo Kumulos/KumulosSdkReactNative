@@ -136,6 +136,23 @@ export default class Kumulos {
             })();
         }
 
+        if (config.inboxUpdatedHandler) {
+            Platform.select({
+                ios: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.inApp.inbox.updated',
+                        config.inboxUpdatedHandler
+                    );
+                },
+                android: () => {
+                    DeviceEventEmitter.addListener(
+                        'kumulos.inApp.inbox.updated',
+                        config.inboxUpdatedHandler
+                    );
+                }
+            })();
+        }
+
         if (Platform.OS === 'android'){
             NativeModules.kumulos.jsListenersRegistered();
         }

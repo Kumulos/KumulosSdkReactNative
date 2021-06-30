@@ -62,6 +62,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
+        KumulosInApp.setOnInboxUpdated(new InboxUpdatedHandler());
         Kumulos.setPushActionHandler(new PushReceiver.PushActionHandler());
 
         JSONObject sdkInfo = new JSONObject();
@@ -297,6 +298,18 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
         else{
             promise.reject("0", "Failed to mark all messages as read");
+        }
+    }
+
+    private static class InboxUpdatedHandler implements KumulosInApp.InAppInboxUpdatedHandler {
+        @Override
+        public void run() {
+            if (null == sharedReactContext) {
+                return;
+            }
+
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.inApp.inbox.updated", null);
         }
     }
 
