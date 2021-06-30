@@ -35,6 +35,7 @@ import com.kumulos.android.InAppInboxSummary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -199,14 +200,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             mapped.putString("subtitle", item.getSubtitle());
             mapped.putBoolean("isRead", item.isRead());
             mapped.putString("sentAt", formatter.format(item.getSentAt()));
-            JSONObject data = item.getData();
-            if (data != null){
-                mapped.putString("dataJson", data.toString());
-            }
 
             Date availableFrom = item.getAvailableFrom();
             Date availableTo = item.getAvailableTo();
             Date dismissedAt = item.getDismissedAt();
+            JSONObject data = item.getData();
+            URL imageUrl = item.getImageUrl();
 
             if (null == availableFrom) {
                 mapped.putNull("availableFrom");
@@ -224,6 +223,20 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
                 mapped.putNull("dismissedAt");
             } else {
                 mapped.putString("dismissedAt", formatter.format(dismissedAt));
+            }
+
+            if (data == null){
+                mapped.putNull("data");
+            }
+            else{
+                mapped.putString("dataJson", data.toString());
+            }
+
+            if (imageUrl == null){
+                mapped.putNull("imageUrl");
+            }
+            else{
+                mapped.putString("imageUrl", imageUrl.toString());
             }
 
             results.pushMap(mapped);

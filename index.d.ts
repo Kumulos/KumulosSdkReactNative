@@ -220,7 +220,8 @@ interface InAppInboxItem {
     dismissedAt: string | null;
     isRead: boolean;
     sentAt: string;
-    data: { [key: string]: any };
+    data: { [key: string]: any } | null;
+    imageUrl: string | null;
 }
 
 interface InAppInboxSummary {
