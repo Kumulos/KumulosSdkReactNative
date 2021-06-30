@@ -214,6 +214,7 @@ interface InAppInboxItem {
     availableFrom: string | null;
     availableTo: string | null;
     dismissedAt: string | null;
+    isRead: boolean;
 }
 
 interface IKumulosInApp {
@@ -239,6 +240,18 @@ interface IKumulosInApp {
      * May fail if the item is no longer available or it was not found.
      */
     deleteMessageFromInbox: (item: InAppInboxItem) => Promise<void>;
+
+    /**
+     * Marks given inbox item as read.
+     * Promise is rejected if the item had been marked read before or if it is not found.
+     */
+    markAsRead: (item: InAppInboxItem) => Promise<void>;
+
+    /**
+     * Marks all inbox items as read.
+     * Promise is rejected if operation fails.
+     */
+    markAllInboxItemsAsRead: () => Promise<void>;
 }
 
 declare const Kumulos: KumulosSdk;

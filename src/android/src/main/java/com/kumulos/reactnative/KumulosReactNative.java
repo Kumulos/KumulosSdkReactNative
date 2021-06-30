@@ -40,6 +40,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class KumulosReactNative extends ReactContextBaseJavaModule {
@@ -48,7 +50,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     private static WritableMap cachedPushOpen;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.4.1";
+    private static final String SDK_VERSION = "5.5.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -92,6 +94,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     }
 
     @Override
+    @NonNull
     public String getName() {
         return "kumulos";
     }
@@ -193,6 +196,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             mapped.putInt("id", item.getId());
             mapped.putString("title", item.getTitle());
             mapped.putString("subtitle", item.getSubtitle());
+            mapped.putBoolean("isRead", item.isRead());
 
             Date availableFrom = item.getAvailableFrom();
             Date availableTo = item.getAvailableTo();
@@ -250,12 +254,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
         for (InAppInboxItem item : items) {
             if (id == item.getId()) {
-                Boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
+                boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
                 if (result){
                     promise.resolve(null);
                 }
                 else{
-                    promise.reject("Failed to delete message");
+                    promise.reject("0", "Failed to delete message");
                 }
 
                 return;
@@ -263,6 +267,37 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
 
         promise.reject("0", "Message not found");
+    }
+
+    @ReactMethod
+    public void markAsRead(Integer id, Promise promise) {
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        for (InAppInboxItem item : items) {
+            if (id == item.getId()) {
+                boolean result = KumulosInApp.markAsRead(reactContext, item);
+                if (result){
+                    promise.resolve(null);
+                }
+                else{
+                    promise.reject("0", "Failed to mark message as read");
+                }
+
+                return;
+            }
+        }
+
+        promise.reject("0", "Message not found");
+    }
+
+    @ReactMethod
+    public void markAllInboxItemsAsRead(Promise promise) {
+        boolean result = KumulosInApp.markAllInboxItemsAsRead(reactContext);
+        if (result){
+            promise.resolve(null);
+        }
+        else{
+            promise.reject("0", "Failed to mark all messages as read");
+        }
     }
 
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {

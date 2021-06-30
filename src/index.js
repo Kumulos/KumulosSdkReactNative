@@ -300,6 +300,14 @@ export class KumulosInApp {
     static async deleteMessageFromInbox(inboxItem) {
         return NativeModules.kumulos.deleteMessageFromInbox(inboxItem.id);
     }
+
+    static async markAsRead(inboxItem) {
+        return NativeModules.kumulos.markAsRead(inboxItem.id);
+    }
+
+    static async markAllInboxItemsAsRead() {
+        return NativeModules.kumulos.markAllInboxItemsAsRead();
+    }
 }
 
 export class DeepLinkResolution {
