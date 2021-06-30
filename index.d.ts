@@ -221,6 +221,11 @@ interface InAppInboxItem {
     isRead: boolean;
 }
 
+interface InAppInboxSummary {
+    totalCount: number;
+    unreadCount: number;
+}
+
 interface IKumulosInApp {
     /**
      * Returns any locally persisted in-app inbox items that are currently available.
@@ -256,6 +261,12 @@ interface IKumulosInApp {
      * Promise is rejected if operation fails.
      */
     markAllInboxItemsAsRead: () => Promise<void>;
+
+    /**
+     * Gets in-app inbox summary, which includes counts for total and unread messages.
+     * Promise is rejected if operation fails.
+     */
+    getInboxSummary: () => Promise<InAppInboxSummary>;
 }
 
 declare const Kumulos: KumulosSdk;

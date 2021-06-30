@@ -325,6 +325,10 @@ export class KumulosInApp {
     static async markAllInboxItemsAsRead() {
         return NativeModules.kumulos.markAllInboxItemsAsRead();
     }
+
+    static async getInboxSummary() {
+        return NativeModules.kumulos.getInboxSummary();
+    }
 }
 
 export class DeepLinkResolution {

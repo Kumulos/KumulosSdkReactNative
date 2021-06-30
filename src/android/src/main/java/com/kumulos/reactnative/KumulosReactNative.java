@@ -31,7 +31,7 @@ import com.kumulos.android.Kumulos;
 import com.kumulos.android.KumulosConfig;
 import com.kumulos.android.KumulosInApp;
 import com.kumulos.android.PushMessage;
-
+import com.kumulos.android.InAppInboxSummary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -299,6 +299,23 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         else{
             promise.reject("0", "Failed to mark all messages as read");
         }
+    }
+
+    @ReactMethod
+    public void getInboxSummary(Promise promise) {
+        KumulosInApp.getInboxSummaryAsync(reactContext, (InAppInboxSummary summary) -> {
+            if (summary == null){
+                promise.reject("0", "Could not get inbox summary");
+
+                return;
+            }
+
+            WritableMap mapped = new WritableNativeMap();
+            mapped.putInt("totalCount", summary.getTotalCount());
+            mapped.putInt("unreadCount", summary.getUnreadCount());
+
+            promise.resolve(mapped);
+        });
     }
 
     private static class InboxUpdatedHandler implements KumulosInApp.InAppInboxUpdatedHandler {
