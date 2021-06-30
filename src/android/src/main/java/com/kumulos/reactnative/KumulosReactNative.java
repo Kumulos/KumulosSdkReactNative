@@ -198,6 +198,11 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             mapped.putString("title", item.getTitle());
             mapped.putString("subtitle", item.getSubtitle());
             mapped.putBoolean("isRead", item.isRead());
+            mapped.putString("sentAt", formatter.format(item.getSentAt()));
+            JSONObject data = item.getData();
+            if (data != null){
+                mapped.putString("dataJson", data.toString());
+            }
 
             Date availableFrom = item.getAvailableFrom();
             Date availableTo = item.getAvailableTo();

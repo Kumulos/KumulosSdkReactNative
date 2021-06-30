@@ -219,6 +219,8 @@ interface InAppInboxItem {
     availableTo: string | null;
     dismissedAt: string | null;
     isRead: boolean;
+    sentAt: string;
+    data: { [key: string]: any };
 }
 
 interface InAppInboxSummary {

@@ -307,7 +307,18 @@ export class KumulosInApp {
     }
 
     static async getInboxItems() {
-        return NativeModules.kumulos.inAppGetInboxItems();
+        return NativeModules.kumulos.inAppGetInboxItems()
+            .then((items) => {
+                const parsedItems = items.map((item) => {
+                    if (item.dataJson){
+                        item.data = JSON.parse(item.dataJson);
+                        delete item.dataJson;
+                    }
+                    return item;
+                });
+
+                return parsedItems;
+            });
     }
 
     static async presentInboxMessage(inboxItem) {
