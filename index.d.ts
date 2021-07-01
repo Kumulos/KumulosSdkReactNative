@@ -219,7 +219,7 @@ interface InAppInboxItem {
     availableTo: string | null;
     dismissedAt: string | null;
     isRead: boolean;
-    sentAt: string;
+    sentAt: string | null;
     data: { [key: string]: any } | null;
     imageUrl: string | null;
 }

@@ -7,6 +7,7 @@
 static KSInAppDeepLinkHandlerBlock ksInAppDeepLinkHandler;
 static KSPushOpenedHandlerBlock ksPushOpenedHandler;
 static KSDeepLinkHandlerBlock ksDeepLinkHandler;
+static InboxUpdatedHandlerBlock ksInboxUpdatedHandler;
 API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
@@ -118,10 +119,20 @@ static NSMutableDictionary* deepLinkCachedData = nil;
 #endif
 
     [Kumulos initializeWithConfig:config];
+
+    [self doAfterKumulosInit];
+}
+
++ (void) doAfterKumulosInit {
+    [KumulosInApp setOnInboxUpdated:^(){
+        if (ksInboxUpdatedHandler){
+            ksInboxUpdatedHandler();
+        }
+    }];
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed", @"kumulos.links.deepLinkPressed"];
+    return @[@"kumulos.push.opened", @"kumulos.push.received", @"kumulos.inApp.deepLinkPressed", @"kumulos.links.deepLinkPressed", @"kumulos.inApp.inbox.updated"];
 }
 
 - (NSMutableDictionary*) pushToDict:(KSPushNotification*)notification {
@@ -154,6 +165,10 @@ static NSMutableDictionary* deepLinkCachedData = nil;
         deepLinkCachedData = nil;
     }
 
+    ksInboxUpdatedHandler = ^() {
+        [self sendEventWithName:@"kumulos.inApp.inbox.updated" body: nil];
+    };
+
     ksPushOpenedHandler = ^(KSPushNotification * _Nonnull notification) {
         if (!notification.id) {
             return;
@@ -181,6 +196,7 @@ static NSMutableDictionary* deepLinkCachedData = nil;
 - (void)stopObserving {
     ksInAppDeepLinkHandler = nil;
     ksPushOpenedHandler = nil;
+    ksInboxUpdatedHandler = nil;
 }
 
 RCT_EXPORT_MODULE(kumulos)
@@ -253,12 +269,19 @@ RCT_EXPORT_METHOD(inAppGetInboxItems:(RCTPromiseResolveBlock)resolve reject:(RCT
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 
     for (KSInAppInboxItem* item in inboxItems) {
+        NSURL* imageUrl = [item getImageUrl];
+
         [items addObject:@{@"id": item.id,
                            @"title": item.title,
                            @"subtitle": item.subtitle,
                            @"availableFrom": item.availableFrom ? [formatter stringFromDate:item.availableFrom] : NSNull.null,
                            @"availableTo": item.availableTo ? [formatter stringFromDate:item.availableTo] : NSNull.null,
-                           @"dismissedAt": item.dismissedAt ? [formatter stringFromDate:item.dismissedAt] : NSNull.null}];
+                           @"dismissedAt": item.dismissedAt ? [formatter stringFromDate:item.dismissedAt] : NSNull.null,
+                           @"isRead": @([item isRead]),
+                           @"sentAt": item.sentAt ? [formatter stringFromDate:item.sentAt] : NSNull.null,
+                           @"data": item.data,
+                           @"imageUrl": imageUrl ? imageUrl.absoluteString : NSNull.null
+        }];
     }
     resolve(items);
 }
@@ -321,6 +344,49 @@ RCT_EXPORT_METHOD(pushStoreToken:(NSString*) token)
     }
 
     [Kumulos.shared pushRegisterWithDeviceToken:tokenData];
+}
+
+
+RCT_EXPORT_METHOD(markAsRead:(NSNumber* _Nonnull)ident resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    NSArray<KSInAppInboxItem*>* inboxItems = [KumulosInApp getInboxItems];
+    for (KSInAppInboxItem* msg in inboxItems) {
+        if ([msg.id isEqualToNumber:ident]) {
+            BOOL result = [KumulosInApp markAsRead:msg];
+
+            if (result) {
+                resolve(nil);
+            } else {
+                reject(@"0", @"Failed to mark message as read", nil);
+            }
+
+            return;
+        }
+    }
+
+    reject(@"0", @"Message not found", nil);
+}
+
+RCT_EXPORT_METHOD(markAllInboxItemsAsRead:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    BOOL result = [KumulosInApp markAllInboxItemsAsRead];
+    if (result) {
+        resolve(nil);
+    } else {
+        reject(@"0", @"Failed to mark all messages as read", nil);
+    }
+}
+
+RCT_EXPORT_METHOD(getInboxSummary:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    [KumulosInApp getInboxSummaryAsync:^(InAppInboxSummary* summary) {
+        if (summary == nil){
+            reject(@"0", @"Could not get inbox summary", nil);
+        }
+        else{
+            resolve(@{@"totalCount": @(summary.totalCount), @"unreadCount": @(summary.unreadCount)});
+        }
+    }];
 }
 
 @end

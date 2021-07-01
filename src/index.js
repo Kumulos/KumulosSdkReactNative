@@ -139,7 +139,7 @@ export default class Kumulos {
         if (config.inboxUpdatedHandler) {
             Platform.select({
                 ios: () => {
-                    DeviceEventEmitter.addListener(
+                    kumulosEmitter.addListener(
                         'kumulos.inApp.inbox.updated',
                         config.inboxUpdatedHandler
                     );
