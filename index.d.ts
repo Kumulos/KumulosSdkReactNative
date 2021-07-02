@@ -213,6 +213,7 @@ interface KumulosSdk {
 }
 
 interface InAppInboxItem {
+    id: number;
     title: string;
     subtitle: string;
     availableFrom: string | null;
