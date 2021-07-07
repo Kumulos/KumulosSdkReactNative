@@ -273,6 +273,15 @@ interface IKumulosInApp {
     getInboxSummary: () => Promise<InAppInboxSummary>;
 }
 
+interface IDeepLinkResolution {
+    LookupFailed: string;
+    LinkNotFound: string;
+    LinkExpired: string;
+    LinkLimitExceeded: string;
+    LinkMatched: string;
+}
+
 declare const Kumulos: KumulosSdk;
 export const KumulosInApp: IKumulosInApp;
+export const DeepLinkResolution: IDeepLinkResolution;
 export default Kumulos;
