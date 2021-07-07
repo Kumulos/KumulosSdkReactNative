@@ -91,10 +91,6 @@ interface KumulosConfig {
      * Called when a user taps a deep-link which brings user to the app
      */
     deepLinkHandler?: (resolution: DeepLinkResolution, link: string, data: { [key: string]: any } | null) => void;
-    /**
-     * Called when inbox is updated. This includes message marked as read, message opened, deleted, added, evicted or other.
-     */
-    inboxUpdatedHandler?: () => void;
 }
 
 interface KumulosSdk {
@@ -271,6 +267,11 @@ interface IKumulosInApp {
      * Promise is rejected if operation fails.
      */
     getInboxSummary: () => Promise<InAppInboxSummary>;
+
+    /**
+     * Sets handler which is called when inbox is updated. This includes message marked as read, message opened, deleted, added, evicted or other.
+     */
+    setOnInboxUpdatedHandler: (handler: (() => void) | null) => void;
 }
 
 interface IDeepLinkResolution {
