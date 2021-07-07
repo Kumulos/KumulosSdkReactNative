@@ -36,7 +36,7 @@ import Kumulos from 'kumulos-react-native';
 
 Kumulos.initialize({
     apiKey: 'YOUR_API_KEY',
-    secretKey: 'YOUR_SECRET_KEY'
+    secretKey: 'YOUR_SECRET_KEY',
 });
 ```
 
@@ -74,8 +74,8 @@ This project is licensed under the MIT license with portions licensed under the 
 
 ## React Native Version Support
 
-| RN Version        | SDK Version | Docs                                                                           |
-| ----------------- | ----------- | ------------------------------------------------------------------------------ |
-| >= 0.60           | 5.x, 4.x    | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
-| >= 0.59 && < 0.60 | 3.0.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/3.0.0/README.md)  |
-| >= 0.46 && < 0.59 | 2.1.0       | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/2.1.0/README.md)  |
+| RN Version        | SDK Version   | Docs                                                                           |
+| ----------------- | ------------- | ------------------------------------------------------------------------------ |
+| >= 0.60           | 6.x, 5.x, 4.x | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/master/README.md) |
+| >= 0.59 && < 0.60 | 3.0.0         | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/3.0.0/README.md)  |
+| >= 0.46 && < 0.59 | 2.1.0         | [Docs](https://github.com/Kumulos/KumulosSdkReactNative/blob/2.1.0/README.md)  |

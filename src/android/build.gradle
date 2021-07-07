@@ -14,7 +14,7 @@ allprojects {
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             url 'https://maven.google.com/'
             name 'Google'
@@ -29,7 +29,7 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+    compileSdkVersion safeExtGet('compileSdkVersion', 30)
 
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', 16)
@@ -38,6 +38,10 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -50,13 +54,11 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
 
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-
-    debugApi ('com.kumulos.android:kumulos-android-debug:11.3.1') {
+    debugApi ('com.kumulos.android:kumulos-android-debug:12.0.0') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }
-    releaseApi ('com.kumulos.android:kumulos-android-release:11.3.1') {
+    releaseApi ('com.kumulos.android:kumulos-android-release:12.0.0') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }

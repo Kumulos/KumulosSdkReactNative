@@ -285,12 +285,26 @@ export default class Kumulos {
 }
 
 export class KumulosInApp {
+    static _androidInboxEventSubscription = null;
+    static _iosInboxEventSubscription = null;
+
     static updateConsentForUser(consented) {
         NativeModules.kumulos.inAppUpdateConsentForUser(consented);
     }
 
     static async getInboxItems() {
-        return NativeModules.kumulos.inAppGetInboxItems();
+        return NativeModules.kumulos.inAppGetInboxItems()
+            .then((items) => {
+                const parsedItems = items.map((item) => {
+                    if (item.dataJson){
+                        item.data = JSON.parse(item.dataJson);
+                        delete item.dataJson;
+                    }
+                    return item;
+                });
+
+                return parsedItems;
+            });
     }
 
     static async presentInboxMessage(inboxItem) {
@@ -299,6 +313,48 @@ export class KumulosInApp {
 
     static async deleteMessageFromInbox(inboxItem) {
         return NativeModules.kumulos.deleteMessageFromInbox(inboxItem.id);
+    }
+
+    static async markAsRead(inboxItem) {
+        return NativeModules.kumulos.markAsRead(inboxItem.id);
+    }
+
+    static async markAllInboxItemsAsRead() {
+        return NativeModules.kumulos.markAllInboxItemsAsRead();
+    }
+
+    static async getInboxSummary() {
+        return NativeModules.kumulos.getInboxSummary();
+    }
+
+    static setOnInboxUpdatedHandler(handler) {
+        if (handler === null){
+            if (KumulosInApp._androidInboxEventSubscription !== null){
+                KumulosInApp._androidInboxEventSubscription.remove();
+                KumulosInApp._androidInboxEventSubscription = null;
+            }
+
+            if (KumulosInApp._iosInboxEventSubscription !== null){
+                KumulosInApp._iosInboxEventSubscription.remove();
+                KumulosInApp._iosInboxEventSubscription = null;
+            }
+            return;
+        }
+
+        Platform.select({
+            ios: () => {
+                KumulosInApp._iosInboxEventSubscription = kumulosEmitter.addListener(
+                    'kumulos.inApp.inbox.updated',
+                    handler
+                );
+            },
+            android: () => {
+                KumulosInApp._androidInboxEventSubscription = DeviceEventEmitter.addListener(
+                    'kumulos.inApp.inbox.updated',
+                    handler
+                );
+            }
+        })();
     }
 }
 

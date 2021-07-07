@@ -31,15 +31,18 @@ import com.kumulos.android.Kumulos;
 import com.kumulos.android.KumulosConfig;
 import com.kumulos.android.KumulosInApp;
 import com.kumulos.android.PushMessage;
-
+import com.kumulos.android.InAppInboxSummary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class KumulosReactNative extends ReactContextBaseJavaModule {
@@ -48,7 +51,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     private static WritableMap cachedPushOpen;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "5.4.1";
+    private static final String SDK_VERSION = "6.0.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -60,6 +63,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
+        KumulosInApp.setOnInboxUpdated(new InboxUpdatedHandler());
         Kumulos.setPushActionHandler(new PushReceiver.PushActionHandler());
 
         JSONObject sdkInfo = new JSONObject();
@@ -92,6 +96,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     }
 
     @Override
+    @NonNull
     public String getName() {
         return "kumulos";
     }
@@ -193,10 +198,14 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             mapped.putInt("id", item.getId());
             mapped.putString("title", item.getTitle());
             mapped.putString("subtitle", item.getSubtitle());
+            mapped.putBoolean("isRead", item.isRead());
+            mapped.putString("sentAt", formatter.format(item.getSentAt()));
 
             Date availableFrom = item.getAvailableFrom();
             Date availableTo = item.getAvailableTo();
             Date dismissedAt = item.getDismissedAt();
+            JSONObject data = item.getData();
+            URL imageUrl = item.getImageUrl();
 
             if (null == availableFrom) {
                 mapped.putNull("availableFrom");
@@ -214,6 +223,20 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
                 mapped.putNull("dismissedAt");
             } else {
                 mapped.putString("dismissedAt", formatter.format(dismissedAt));
+            }
+
+            if (data == null){
+                mapped.putNull("data");
+            }
+            else{
+                mapped.putString("dataJson", data.toString());
+            }
+
+            if (imageUrl == null){
+                mapped.putNull("imageUrl");
+            }
+            else{
+                mapped.putString("imageUrl", imageUrl.toString());
             }
 
             results.pushMap(mapped);
@@ -250,12 +273,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
         for (InAppInboxItem item : items) {
             if (id == item.getId()) {
-                Boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
+                boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
                 if (result){
                     promise.resolve(null);
                 }
                 else{
-                    promise.reject("Failed to delete message");
+                    promise.reject("0", "Failed to delete message");
                 }
 
                 return;
@@ -263,6 +286,66 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
 
         promise.reject("0", "Message not found");
+    }
+
+    @ReactMethod
+    public void markAsRead(Integer id, Promise promise) {
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        for (InAppInboxItem item : items) {
+            if (id == item.getId()) {
+                boolean result = KumulosInApp.markAsRead(reactContext, item);
+                if (result){
+                    promise.resolve(null);
+                }
+                else{
+                    promise.reject("0", "Failed to mark message as read");
+                }
+
+                return;
+            }
+        }
+
+        promise.reject("0", "Message not found");
+    }
+
+    @ReactMethod
+    public void markAllInboxItemsAsRead(Promise promise) {
+        boolean result = KumulosInApp.markAllInboxItemsAsRead(reactContext);
+        if (result){
+            promise.resolve(null);
+        }
+        else{
+            promise.reject("0", "Failed to mark all messages as read");
+        }
+    }
+
+    @ReactMethod
+    public void getInboxSummary(Promise promise) {
+        KumulosInApp.getInboxSummaryAsync(reactContext, (InAppInboxSummary summary) -> {
+            if (summary == null){
+                promise.reject("0", "Could not get inbox summary");
+
+                return;
+            }
+
+            WritableMap mapped = new WritableNativeMap();
+            mapped.putInt("totalCount", summary.getTotalCount());
+            mapped.putInt("unreadCount", summary.getUnreadCount());
+
+            promise.resolve(mapped);
+        });
+    }
+
+    private static class InboxUpdatedHandler implements KumulosInApp.InAppInboxUpdatedHandler {
+        @Override
+        public void run() {
+            if (null == sharedReactContext) {
+                return;
+            }
+
+            KumulosReactNative.sharedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("kumulos.inApp.inbox.updated", null);
+        }
     }
 
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {
