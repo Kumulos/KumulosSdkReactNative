@@ -26,3 +26,8 @@ Release:
 -   [ ] Delete branch once merged
 -   [ ] Create tag from master matching chosen version
 -   [ ] Run `npm publish` to push to NPM
+
+Update changelog:
+
+- [ ] https://docs.kumulos.com/developer-guide/sdk-reference/react-native/#changelog
+
