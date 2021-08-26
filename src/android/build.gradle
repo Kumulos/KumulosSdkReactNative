@@ -54,11 +54,11 @@ repositories {
 dependencies {
     implementation 'com.facebook.react:react-native:+'
 
-    debugApi ('com.kumulos.android:kumulos-android-debug:12.1.0') {
+    debugApi ('com.kumulos.android:kumulos-android-debug:12.1.2') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }
-    releaseApi ('com.kumulos.android:kumulos-android-release:12.1.0') {
+    releaseApi ('com.kumulos.android:kumulos-android-release:12.1.2') {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'okhttp3'
     }
