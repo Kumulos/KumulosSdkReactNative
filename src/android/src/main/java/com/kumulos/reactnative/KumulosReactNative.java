@@ -56,10 +56,14 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
 
-    private final ReactApplicationContext reactContext;
 
     private static boolean jsListenersRegistered = false;
     private static WritableMap deepLinkCachedData = null;
+
+    public KumulosReactNative(ReactApplicationContext reactContext) {
+        super(reactContext);
+        sharedReactContext = reactContext;
+    }
 
     public static void initialize(Application application, KumulosConfig.Builder config) {
         KumulosInApp.setDeepLinkHandler(new InAppDeepLinkHandler());
@@ -89,12 +93,6 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         Kumulos.initialize(application, config.build());
     }
 
-    public KumulosReactNative(ReactApplicationContext reactContext) {
-        super(reactContext);
-        this.reactContext = reactContext;
-        sharedReactContext = reactContext;
-    }
-
     @Override
     @NonNull
     public String getName() {
@@ -103,19 +101,19 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getInstallId(Promise promise) {
-        String installId = Installation.id(reactContext);
+        String installId = Installation.id(getReactApplicationContext());
         promise.resolve(installId);
     }
 
     @ReactMethod
     public void getCurrentUserIdentifier(Promise promise) {
-        String userId = Kumulos.getCurrentUserIdentifier(reactContext);
+        String userId = Kumulos.getCurrentUserIdentifier(getReactApplicationContext());
         promise.resolve(userId);
     }
 
     @ReactMethod
     public void clearUserAssociation() {
-        Kumulos.clearUserAssociation(reactContext);
+        Kumulos.clearUserAssociation(getReactApplicationContext());
     }
 
     @ReactMethod
@@ -128,10 +126,10 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         }
 
         if (flushImmediately) {
-            Kumulos.trackEventImmediately(reactContext, eventType, props);
+            Kumulos.trackEventImmediately(getReactApplicationContext(), eventType, props);
         }
         else {
-            Kumulos.trackEvent(reactContext, eventType, props);
+            Kumulos.trackEvent(getReactApplicationContext(), eventType, props);
         }
     }
 
@@ -141,17 +139,17 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         location.setLatitude(lat);
         location.setLongitude(lng);
 
-        Kumulos.sendLocationUpdate(reactContext, location);
+        Kumulos.sendLocationUpdate(getReactApplicationContext(), location);
     }
 
     @ReactMethod
     public void associateUserWithInstall(String userIdentifier, @Nullable ReadableMap attributes) {
         if (null != attributes) {
             JSONObject attrs = new JSONObject(attributes.toHashMap());
-            Kumulos.associateUserWithInstall(reactContext, userIdentifier, attrs);
+            Kumulos.associateUserWithInstall(getReactApplicationContext(), userIdentifier, attrs);
         }
         else {
-            Kumulos.associateUserWithInstall(reactContext, userIdentifier);
+            Kumulos.associateUserWithInstall(getReactApplicationContext(), userIdentifier);
         }
     }
 
@@ -167,17 +165,17 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
             return;
         }
 
-        Kumulos.trackEventImmediately(reactContext, EVENT_TYPE_PUSH_DEVICE_REGISTERED, props);
+        Kumulos.trackEventImmediately(getReactApplicationContext(), EVENT_TYPE_PUSH_DEVICE_REGISTERED, props);
     }
 
     @ReactMethod
     public void pushRequestDeviceToken() {
-        Kumulos.pushRegister(reactContext);
+        Kumulos.pushRegister(getReactApplicationContext());
     }
 
     @ReactMethod
     public void pushUnregister() {
-        Kumulos.pushUnregister(reactContext);
+        Kumulos.pushUnregister(getReactApplicationContext());
     }
 
     @ReactMethod
@@ -191,7 +189,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
         formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        List<InAppInboxItem> inboxItems = KumulosInApp.getInboxItems(reactContext);
+        List<InAppInboxItem> inboxItems = KumulosInApp.getInboxItems(getReactApplicationContext());
         WritableArray results = new WritableNativeArray();
         for (InAppInboxItem item : inboxItems) {
             WritableMap mapped = new WritableNativeMap();
@@ -247,10 +245,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void inAppPresentItemWithId(Integer partId, Promise promise) {
-        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        ReactApplicationContext ctx = getReactApplicationContext();
+
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(ctx);
         for (InAppInboxItem item : items) {
             if (partId == item.getId()) {
-                KumulosInApp.InboxMessagePresentationResult result = KumulosInApp.presentInboxMessage(reactContext, item);
+                KumulosInApp.InboxMessagePresentationResult result = KumulosInApp.presentInboxMessage(ctx, item);
 
                 switch (result) {
                     case PRESENTED:
@@ -270,10 +270,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void deleteMessageFromInbox(Integer id, Promise promise) {
-        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        ReactApplicationContext ctx = getReactApplicationContext();
+
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(ctx);
         for (InAppInboxItem item : items) {
             if (id == item.getId()) {
-                boolean result = KumulosInApp.deleteMessageFromInbox(reactContext, item);
+                boolean result = KumulosInApp.deleteMessageFromInbox(ctx, item);
                 if (result){
                     promise.resolve(null);
                 }
@@ -290,10 +292,12 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void markAsRead(Integer id, Promise promise) {
-        List<InAppInboxItem> items = KumulosInApp.getInboxItems(reactContext);
+        ReactApplicationContext ctx = getReactApplicationContext();
+
+        List<InAppInboxItem> items = KumulosInApp.getInboxItems(ctx);
         for (InAppInboxItem item : items) {
             if (id == item.getId()) {
-                boolean result = KumulosInApp.markAsRead(reactContext, item);
+                boolean result = KumulosInApp.markAsRead(ctx, item);
                 if (result){
                     promise.resolve(null);
                 }
@@ -310,7 +314,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void markAllInboxItemsAsRead(Promise promise) {
-        boolean result = KumulosInApp.markAllInboxItemsAsRead(reactContext);
+        boolean result = KumulosInApp.markAllInboxItemsAsRead(getReactApplicationContext());
         if (result){
             promise.resolve(null);
         }
@@ -321,7 +325,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getInboxSummary(Promise promise) {
-        KumulosInApp.getInboxSummaryAsync(reactContext, (InAppInboxSummary summary) -> {
+        KumulosInApp.getInboxSummaryAsync(getReactApplicationContext(), (InAppInboxSummary summary) -> {
             if (summary == null){
                 promise.reject("0", "Could not get inbox summary");
 
