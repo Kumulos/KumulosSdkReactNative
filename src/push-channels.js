@@ -24,10 +24,10 @@ async function changeChannelSubscriptions(client, uuids, method, allowEmptyUuids
     return makeAuthedJsonCall(client, method, url, data)
         .then((response) => {
             if (response.status === 404) {
-                Promise.reject(new Error('some channels are not found: status: ' + response.status));
+                return Promise.reject(new Error('some channels are not found: status: ' + response.status));
             }
             else if (!response.ok) {
-                Promise.reject(new Error('failed to update channel subscription. status: ' + response.status));
+                return Promise.reject(new Error('failed to update channel subscription. status: ' + response.status));
             }
 
             return response;
@@ -54,7 +54,7 @@ export class PushSubscriptionManager {
         return makeAuthedJsonCall(this.client, 'GET', url)
             .then((response) => {
                 if (!response.ok) {
-                    Promise.reject(new Error('failed to list channels. status: ' + response.status));
+                    return Promise.reject(new Error('failed to list channels. status: ' + response.status));
                 }
                 else {
                     return response.json();
@@ -115,7 +115,7 @@ export class PushSubscriptionManager {
         return makeAuthedJsonCall(this.client, 'POST', url, data)
             .then((response) => {
                 if (!response.ok) {
-                    Promise.reject(new Error('failed to create channel. status: ' + response.status));
+                    return Promise.reject(new Error('failed to create channel. status: ' + response.status));
                 }
 
                 return response.json();
