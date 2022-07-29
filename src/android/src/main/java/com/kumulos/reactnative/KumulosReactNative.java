@@ -445,6 +445,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
                     mappedResolution = "LINK_MATCHED";
                     linkData = new WritableNativeMap();
 
+                    assert data != null;
                     linkData.putString("url", data.url);
 
                     WritableMap content = new WritableNativeMap();
