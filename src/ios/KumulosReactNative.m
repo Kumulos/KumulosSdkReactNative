@@ -279,7 +279,7 @@ RCT_EXPORT_METHOD(inAppGetInboxItems:(RCTPromiseResolveBlock)resolve reject:(RCT
                            @"dismissedAt": item.dismissedAt ? [formatter stringFromDate:item.dismissedAt] : NSNull.null,
                            @"isRead": @([item isRead]),
                            @"sentAt": item.sentAt ? [formatter stringFromDate:item.sentAt] : NSNull.null,
-                           @"data": item.data,
+                           @"data": item.data ?: NSNull.null,
                            @"imageUrl": imageUrl ? imageUrl.absoluteString : NSNull.null
         }];
     }
