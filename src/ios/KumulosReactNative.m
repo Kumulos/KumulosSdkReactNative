@@ -12,7 +12,7 @@ API_AVAILABLE(ios(10.0))
 static KSPushReceivedInForegroundHandlerBlock ksPushReceivedHandler;
 static KSPushNotification* _Nullable ksColdStartPush;
 
-static const NSString* KSReactNativeVersion = @"6.2.1";
+static const NSString* KSReactNativeVersion = @"6.2.2";
 static const NSUInteger KSSdkTypeReactNative = 9;
 static const NSUInteger KSRuntimeTypeReactNative = 7;
 
@@ -279,7 +279,7 @@ RCT_EXPORT_METHOD(inAppGetInboxItems:(RCTPromiseResolveBlock)resolve reject:(RCT
                            @"dismissedAt": item.dismissedAt ? [formatter stringFromDate:item.dismissedAt] : NSNull.null,
                            @"isRead": @([item isRead]),
                            @"sentAt": item.sentAt ? [formatter stringFromDate:item.sentAt] : NSNull.null,
-                           @"data": item.data,
+                           @"data": item.data ?: NSNull.null,
                            @"imageUrl": imageUrl ? imageUrl.absoluteString : NSNull.null
         }];
     }

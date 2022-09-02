@@ -1,6 +1,6 @@
 {
     "name": "kumulos-react-native",
-    "version": "6.2.1",
+    "version": "6.2.2",
     "description": "Official SDK for integrating Kumulos services with your React Native projects",
     "main": "src/index.js",
     "types": "index.d.ts",
