@@ -209,7 +209,7 @@ export default class Kumulos {
         return new PushSubscriptionManager(clientInstance);
     }
 
-    static pushRequestToken() {
+    static pushRequestDeviceToken() {
         NativeModules.kumulos.pushRequestDeviceToken();
     }
 

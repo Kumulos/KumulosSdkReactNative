@@ -53,7 +53,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
     static ReactContext sharedReactContext;
 
     private static final int SDK_TYPE = 9;
-    private static final String SDK_VERSION = "6.2.2";
+    private static final String SDK_VERSION = "7.0.0";
     private static final int RUNTIME_TYPE = 7;
     private static final int PUSH_TOKEN_TYPE = 2;
     private static final String EVENT_TYPE_PUSH_DEVICE_REGISTERED = "k.push.deviceRegistered";
@@ -185,7 +185,7 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void pushRequestDeviceToken() {
-        Kumulos.pushRegister(getReactApplicationContext());
+        Kumulos.pushRequestDeviceToken(getReactApplicationContext());
     }
 
     @ReactMethod
@@ -364,8 +364,11 @@ public class KumulosReactNative extends ReactContextBaseJavaModule {
 
     private static class InAppDeepLinkHandler implements InAppDeepLinkHandlerInterface {
         @Override
-        public void handle(Context context, JSONObject data) {
-            maybeEmit("kumulos.inApp.deepLinkPressed", data.toString());
+        public void handle(Context context, InAppButtonPress buttonPress) {
+            // Note: dont pass entire button press to avoid updating ios dependency
+            JSONObject deepLinkData = buttonPress.getDeepLinkData();
+
+            maybeEmit("kumulos.inApp.deepLinkPressed", deepLinkData.toString());
         }
     }
 
