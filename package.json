@@ -8,8 +8,7 @@
     "author": "Kumulos Ltd. <support@kumulos.com>",
     "license": "MIT",
     "dependencies": {
-        "base-64": "^0.1.0",
-        "raven-js": "^3.26.3"
+        "base-64": "^0.1.0"
     },
     "peerDependencies": {
         "react-native": ">=0.60.0"
