@@ -23,11 +23,11 @@ interface PushNotification {
 }
 
 enum DeepLinkResolution {
-    LookupFailed = "LOOKUP_FAILED",
-    LinkNotFound = "LINK_NOT_FOUND",
-    LinkExpired = "LINK_EXPIRED",
-    LinkLimitExceeded = "LINK_LIMIT_EXCEEDED",
-    LinkMatched = "LINK_MATCHED"
+    LookupFailed = 'LOOKUP_FAILED',
+    LinkNotFound = 'LINK_NOT_FOUND',
+    LinkExpired = 'LINK_EXPIRED',
+    LinkLimitExceeded = 'LINK_LIMIT_EXCEEDED',
+    LinkMatched = 'LINK_MATCHED',
 }
 
 interface PushChannelManager {
@@ -67,15 +67,6 @@ interface KumulosConfig {
     apiKey: string;
     secretKey: string;
     /**
-     * Turn crash reporting on (defaults to false)
-     */
-    enableCrashReporting?: boolean;
-    /**
-     * A version identifier for minified source maps you upload
-     * used in JS error reporting source mapping
-     */
-    sourceMapTag?: string;
-    /**
      * Called when a push notification is received and your app is in the foreground
      */
     pushReceivedHandler?: (notification: PushNotification) => void;
@@ -87,10 +78,14 @@ interface KumulosConfig {
      * Called when a user taps a deep-link button from an in-app message. Handle the data payload as desired.
      */
     inAppDeepLinkHandler?: (data: { [key: string]: any }) => void;
-     /**
+    /**
      * Called when a user taps a deep-link which brings user to the app
      */
-    deepLinkHandler?: (resolution: DeepLinkResolution, link: string, data: { [key: string]: any } | null) => void;
+    deepLinkHandler?: (
+        resolution: DeepLinkResolution,
+        link: string,
+        data: { [key: string]: any } | null
+    ) => void;
 }
 
 interface KumulosSdk {
@@ -147,20 +142,6 @@ interface KumulosSdk {
      * After being recorded locally, all stored events will be flushed to the server.
      */
     trackEventImmediately: (eventType: string, properties?: {}) => void;
-
-    /**
-     * Logs an exception to the Kumulos Crash reporting service
-     *
-     * Use this method to record unexpected application state
-     */
-    logException: (e: any, context?: {}) => void;
-
-    /**
-     * Logs an uncaught exception to the Kumulos Crash reporting service
-     *
-     * Use this method to forward exceptions from other error handlers.
-     */
-    logUncaughtException: (e: any) => void;
 
     /**
      * Updates the location of the current installation in Kumulos
